@@ -1,0 +1,8 @@
+var express = require('express');
+var router = express.Router();
+
+/* Log the current time and the body of the request */
+router.use(function timeLog (req, res, next) {
+      console.log('Time: ', Date.now())
+      next()
+   })
