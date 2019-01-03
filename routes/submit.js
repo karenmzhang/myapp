@@ -3,11 +3,75 @@ var router = express.Router();
 
 var requestTime = (req, res, next) => {
    req.requestTime = Date.now();
+
+   const { spawn } = require('child_process');
+   const fs = require('fs');
+
+   fs.writeFile('HelloWorld.java', req.body.code, (err) => {
+         if (err) throw err;
+         
+         console.log('file saved');
+      });
+   
+   var opts = {stdio: 'inherit'};
+   var javac = spawn('javac', ['/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp/HelloWorld.java'], opts);
+   
+   javac.on('close', (code) => {
+         if (code === 0) {
+            var javaa = spawn('java', ["-cp", '/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp', 'HelloWorld']);
+
+            javaa.on('exit', function (code, signal) {
+                  console.log('child process exited with ' +`code ${code} and signal ${signal}`);
+               });
+
+            javaa.stdout.on('data', (data) => {
+                  console.log(`stdout: ${data}`);
+               });
+
+            javaa.stderr.on('data', (data) => {
+                  console.error(`stderr: ${data}`);
+               });
+         }
+      });
+
+   // const child = spawn('javac HelloWorld.java');
+   //const child = spawn('pwd');
+
+   /*child.on('exit', function (code, signal) {
+      console.log('child process exited with ' +
+                  `code ${code} and signal ${signal}`);
+   });
+
+   child.stdout.on('data', (data) => {
+      console.log(`child stdout:\n${data}`);
+   });
+
+   child.stderr.on('data', (data) => {
+      console.error(`child stderr:\n${data}`);
+      });*/
    next();
 };
  
 /* Log the current time and the body of the request */
-router.use(requestTime)
+router.use(requestTime);
+
+/*
+const { spawn } = require('child_process');
+const child = spawn('pwd');
+
+child.on('exit', function (code, signal) {
+      console.log('child process exited with ' +
+                  `code ${code} and signal ${signal}`);
+   });
+
+child.stdout.on('data', (data) => {
+      console.log(`child stdout:\n${data}`);
+   });
+
+child.stderr.on('data', (data) => {
+      console.error(`child stderr:\n${data}`);
+   }); 
+*/
 
 router.post('/', (req, res) => {
       var responseText = req.body.code + '\n';

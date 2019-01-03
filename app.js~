@@ -25,7 +25,7 @@ app.post('/side', (req, res, next) => {
         next()
    },
    (req, res) => {
-	console.log(req.method + ' request to sidepage\n')
+      console.log(req.method + ' request to sidepage\n')
    })
 
 app.all('/side', (req, res) => {
