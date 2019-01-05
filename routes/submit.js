@@ -68,6 +68,7 @@ router.post('/', (req, res) => {
       console.error(`child stderr:\n${data}`);
       });*/
  //   next();
+    res.end();
 });
 
 /* Log the current time and the body of the request */
