@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+var output = "";
 var requestTime = (req, res, next) => {
     req.requestTime = Date.now();
 
@@ -36,6 +37,7 @@ var requestTime = (req, res, next) => {
 	    });
 
 	    javaa.stdout.on('data', (data) => {
+		output = data;
 		console.log(`stdout: ${data}`);
 	    });
 
@@ -85,8 +87,9 @@ child.stderr.on('data', (data) => {
  */
 
 router.post('/', (req, res) => {
-    var responseText = req.body.code + '\n';
+    var responseText = "";
     responseText += 'Submitted at: ' + req.requestTime + '\n';
+    responseText += "Output: " + output + '\n';
     res.send(responseText);
 })
 
