@@ -46,7 +46,7 @@ router.post('/', (req, res) => {
 		res.send(responseText);
 		console.log(`stdout: ${data}`);
 
-		res.end();
+		//res.end();
 	    });
 
 	    javaa.stderr.on('data', (data) => {
