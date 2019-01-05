@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-var output = "";
 var requestTime = (req, res, next) => {
     req.requestTime = Date.now();
 
@@ -21,7 +20,7 @@ var requestTime = (req, res, next) => {
     //    console.log(fileName);
     fs.writeFileSync(fileName, req.body.code);
 
-    var javac = spawnSync('javac', [fileName], opts);
+    var javac = spawn('javac', [fileName], opts);
 
     //   var opts = {stdio: 'inherit'};
     //   var javac = spawn('javac', ['/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp/HelloWorld.java'], opts);
@@ -29,7 +28,7 @@ var requestTime = (req, res, next) => {
     javac.on('close', (code) => {
 	if (code === 0) {
 	    console.log("inside javaa block");
-	    var javaa = spawnSync('java', ["-cp", __dirname, 'Code']);
+	    var javaa = spawn('java', ["-cp", __dirname, 'Code']);
 	    //            var javaa = spawn('java', ["-cp", '/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp', 'HelloWorld']);
 
 	    javaa.on('exit', function (code, signal) {
@@ -38,6 +37,11 @@ var requestTime = (req, res, next) => {
 
 	    javaa.stdout.on('data', (data) => {
 		output = data;
+
+		var responseText = "";
+		responseText += 'Submitted at: ' + req.requestTime + '\n';
+		responseText += "Output: " + output + '\n';
+		res.send(responseText);
 		console.log(`stdout: ${data}`);
 	    });
 
@@ -85,12 +89,12 @@ child.stderr.on('data', (data) => {
       console.error(`child stderr:\n${data}`);
    }); 
  */
-
+/*
 router.post('/', (req, res) => {
     var responseText = "";
     responseText += 'Submitted at: ' + req.requestTime + '\n';
     responseText += "Output: " + output + '\n';
     res.send(responseText);
-})
+})*/
 
 module.exports = router;
