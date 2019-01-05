@@ -44,6 +44,8 @@ router.post('/', (req, res) => {
 		responseText += "Output: " + output + '\n';
 		res.send(responseText);
 		console.log(`stdout: ${data}`);
+
+		res.end();
 	    });
 
 	    javaa.stderr.on('data', (data) => {
@@ -68,7 +70,6 @@ router.post('/', (req, res) => {
       console.error(`child stderr:\n${data}`);
       });*/
  //   next();
-    res.end();
 });
 
 /* Log the current time and the body of the request */
