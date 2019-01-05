@@ -43,7 +43,7 @@ router.post('/', (req, res) => {
 		var responseText = "";
 		responseText += 'Submitted at: ' + req.requestTime + '\n';
 		responseText += "Output: " + output + '\n';
-		res.send(responseText);
+		res.write(responseText);
 		console.log(`stdout: ${data}`);
 
 		//res.end();
@@ -51,6 +51,10 @@ router.post('/', (req, res) => {
 
 	    javaa.stderr.on('data', (data) => {
 		console.error(`stderr: ${data}`);
+	    });
+	    
+	    javaa.on('close', () => {
+		res.end();
 	    });
 	}
     });
