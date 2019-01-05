@@ -3,6 +3,7 @@ var router = express.Router();
 
 //var requestTime = (req, res, next) => {
 router.post('/', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
     req.requestTime = Date.now();
 
     const { spawn } = require('child_process');
