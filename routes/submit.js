@@ -2,44 +2,55 @@ var express = require('express');
 var router = express.Router();
 
 var requestTime = (req, res, next) => {
-   req.requestTime = Date.now();
+    req.requestTime = Date.now();
 
-   const { spawn } = require('child_process');
-   const fs = require('fs');
+    const { spawn } = require('child_process');
+    const fs = require('fs');
 
-   fs.writeFile('HelloWorld.java', req.body.code, (err) => {
-         if (err) throw err;
-         
-         console.log('file saved');
+    /* fs.writeFile('HelloWorld.java', req.body.code, (err) => {
+	 if (err) throw err;
+
+	 console.log('file saved');
       });
-   
-   var opts = {stdio: 'inherit'};
-   var javac = spawn('javac', ['/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp/HelloWorld.java'], opts);
-   
-   javac.on('close', (code) => {
-         if (code === 0) {
-            var javaa = spawn('java', ["-cp", '/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp', 'HelloWorld']);
+     */
 
-            javaa.on('exit', function (code, signal) {
-                  console.log('child process exited with ' +`code ${code} and signal ${signal}`);
-               });
+    var fileName = __dirname + "/Code.java";
+    var compiledFileName = __dirname + "/Code";
+    var opts = {stdio: 'inherit'};
+    //    console.log(fileName);
+    fs.writeFileSync(fileName, req.body.code);
 
-            javaa.stdout.on('data', (data) => {
-                  console.log(`stdout: ${data}`);
-               });
+    var javac = spawn('javac', [fileName], opts);
 
-            javaa.stderr.on('data', (data) => {
-                  console.error(`stderr: ${data}`);
-               });
-         }
-      });
+    //   var opts = {stdio: 'inherit'};
+    //   var javac = spawn('javac', ['/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp/HelloWorld.java'], opts);
 
-   // const child = spawn('javac HelloWorld.java');
-   //const child = spawn('pwd');
+    javac.on('close', (code) => {
+	if (code === 0) {
+	    console.log("inside javaa block");
+	    var javaa = spawn('java', ["-cp", __dirname, 'Code']);
+	    //            var javaa = spawn('java', ["-cp", '/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp', 'HelloWorld']);
 
-   /*child.on('exit', function (code, signal) {
+	    javaa.on('exit', function (code, signal) {
+		console.log('child process exited with ' +`code ${code} and signal ${signal}`);
+	    });
+
+	    javaa.stdout.on('data', (data) => {
+		console.log(`stdout: ${data}`);
+	    });
+
+	    javaa.stderr.on('data', (data) => {
+		console.error(`stderr: ${data}`);
+	    });
+	}
+    });
+
+    // const child = spawn('javac HelloWorld.java');
+    //const child = spawn('pwd');
+
+    /*child.on('exit', function (code, signal) {
       console.log('child process exited with ' +
-                  `code ${code} and signal ${signal}`);
+		  `code ${code} and signal ${signal}`);
    });
 
    child.stdout.on('data', (data) => {
@@ -49,9 +60,9 @@ var requestTime = (req, res, next) => {
    child.stderr.on('data', (data) => {
       console.error(`child stderr:\n${data}`);
       });*/
-   next();
+    next();
 };
- 
+
 /* Log the current time and the body of the request */
 router.use(requestTime);
 
@@ -61,7 +72,7 @@ const child = spawn('pwd');
 
 child.on('exit', function (code, signal) {
       console.log('child process exited with ' +
-                  `code ${code} and signal ${signal}`);
+		  `code ${code} and signal ${signal}`);
    });
 
 child.stdout.on('data', (data) => {
@@ -71,12 +82,12 @@ child.stdout.on('data', (data) => {
 child.stderr.on('data', (data) => {
       console.error(`child stderr:\n${data}`);
    }); 
-*/
+ */
 
 router.post('/', (req, res) => {
-      var responseText = req.body.code + '\n';
-      responseText += 'Submitted at: ' + req.requestTime + '\n';
-      res.send(responseText);
-   })
+    var responseText = req.body.code + '\n';
+    responseText += 'Submitted at: ' + req.requestTime + '\n';
+    res.send(responseText);
+})
 
 module.exports = router;
