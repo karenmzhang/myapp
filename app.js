@@ -18,7 +18,7 @@ var app = express();
 app.use(express.json());
 //app.use(express.urlencoded({ extended: false }));
 //app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, '/client/build')));
 
 /*app.post('/side', (req, res, next) => {
 	res.send(req.body.key1 + ' post to sidepage\n')
@@ -34,10 +34,11 @@ app.all('/side', (req, res) => {
 
 //app.use('/', indexRouter);
 //app.use('/users', usersRouter);
-app.use('/submit', submitRouter);
+app/use('/api/start', indexRouter);
+app.use('/api/submit', submitRouter);
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname +'client/build/index.html'));
+    res.sendFile(path.join(__dirname +'/client/build/index.html'));
 });
 
 // catch 404 and forward to error handler
