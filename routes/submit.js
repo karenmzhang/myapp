@@ -21,7 +21,7 @@ var requestTime = (req, res, next) => {
     //    console.log(fileName);
     fs.writeFileSync(fileName, req.body.code);
 
-    var javac = spawn('javac', [fileName], opts);
+    var javac = spawnSync('javac', [fileName], opts);
 
     //   var opts = {stdio: 'inherit'};
     //   var javac = spawn('javac', ['/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp/HelloWorld.java'], opts);
@@ -29,7 +29,7 @@ var requestTime = (req, res, next) => {
     javac.on('close', (code) => {
 	if (code === 0) {
 	    console.log("inside javaa block");
-	    var javaa = spawn('java', ["-cp", __dirname, 'Code']);
+	    var javaa = spawnSync('java', ["-cp", __dirname, 'Code']);
 	    //            var javaa = spawn('java', ["-cp", '/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp', 'HelloWorld']);
 
 	    javaa.on('exit', function (code, signal) {
