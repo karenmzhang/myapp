@@ -34,7 +34,7 @@ app.all('/side', (req, res) => {
 
 //app.use('/', indexRouter);
 //app.use('/users', usersRouter);
-app/use('/api/start', indexRouter);
+app.use('/api/start', indexRouter);
 app.use('/api/submit', submitRouter);
 
 app.get('*', (req, res) => {
