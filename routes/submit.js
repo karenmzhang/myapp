@@ -22,11 +22,12 @@ router.post('/', (req, res) => {
     //    console.log(fileName);
     fs.writeFileSync(fileName, req.body.code);
 
-    var javac = spawn('javac', [fileName]);
+    var javac = spawn('javac', [fileName] );
 
     var responseText = "Failed to compile.\nstderr: ";
     javac.stderr.on('data', (data) => {
-	responseText += data;
+	if (!data.includes("Picked up JAVA_TOOL_OPTIONS"))
+	    responseText += data;
 	console.log(`COMPILATION stderr: ${data}`);
     })
     //   var opts = {stdio: 'inherit'};
@@ -51,7 +52,8 @@ router.post('/', (req, res) => {
 	    });
 
 	    javaa.stderr.on('data', (data) => {
-		responseText += data;
+		if (!data.includes("Picked up JAVA_TOOL_OPTIONS"))
+		    responseText += data;
 		console.log(`EXECUTION stderr: ${data}`);
 	    });
 	    
