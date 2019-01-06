@@ -37,12 +37,13 @@ class App extends Component {
 		this.setState({code:value});
 	    }}	
 	    onChange={(editor, data, value) => {
+		console.log(editor.getCursor());
 	    }}
 	    />
 	    <form onSubmit={this.handleSubmit}>
 	    <input type="submit" value ="submit" id="submitButton"/>
 	    </form>
-	    <p>{this.state.output}</p>
+	    <pre>{this.state.output}</pre>
 	    </div>
 	);
     }

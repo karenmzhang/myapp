@@ -22,16 +22,20 @@ router.post('/', (req, res) => {
     //    console.log(fileName);
     fs.writeFileSync(fileName, req.body.code);
 
-    var javac = spawn('javac', [fileName], opts);
+    var javac = spawn('javac', [fileName]);
 
+    var responseText = "Failed to compile.\nstderr: ";
+    javac.stderr.on('data', (data) => {
+	responseText += data;
+	console.log(`COMPILATION stderr: ${data}`);
+    })
     //   var opts = {stdio: 'inherit'};
-    //   var javac = spawn('javac', ['/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp/HelloWorld.java'], opts);
 
     javac.on('close', (code) => {
 	if (code === 0) {
-	    console.log("inside javaa block");
+	    responseText = "Compilation sucessful.\nOutput: "
+	    //    console.log("inside javaa block");
 	    var javaa = spawn('java', ["-cp", __dirname, 'Code']);
-	    //            var javaa = spawn('java', ["-cp", '/Users/karenzhang/Documents/Princeton/Schoolwork_18-19/Thesis/myapp', 'HelloWorld']);
 
 	    javaa.on('exit', function (code, signal) {
 		console.log('child process exited with ' +`code ${code} and signal ${signal}`);
@@ -40,22 +44,25 @@ router.post('/', (req, res) => {
 	    javaa.stdout.on('data', (data) => {
 		output = data;
 
-		var responseText = "";
-		responseText += 'Submitted at: ' + req.requestTime + '\n';
-		responseText += "Output: " + output + '\n';
-		res.write(responseText);
+		responseText += output;
 		console.log(`stdout: ${data}`);
 
 		//res.end();
 	    });
 
 	    javaa.stderr.on('data', (data) => {
-		console.error(`stderr: ${data}`);
+		responseText += data;
+		console.log(`EXECUTION stderr: ${data}`);
 	    });
 	    
 	    javaa.on('close', () => {
-		res.end();
+		responseText += 'Submitted at: ' + req.requestTime + '\n';
+		res.send(responseText);
 	    });
+	} else {
+	    responseText += 'Submitted at: ' + req.requestTime + '\n';
+	    res.send(responseText);
+	    console.log('code was not 0');
 	}
     });
 
