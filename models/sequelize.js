@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const UserModel = require('./user');
 const SnapshotModel = require('./snapshot');
 
-const sequelize = new Sequelize('testdb', 'username', 'password', {
+const sequelize = new Sequelize('testdb', 'karenzhang', '', {
     host: 'localhost',
     dialect: 'postgres',
 });

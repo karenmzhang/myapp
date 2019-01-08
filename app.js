@@ -4,8 +4,8 @@ var path = require('path');
 //var cookieParser = require('cookie-parser');
 //var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var snapshotRouter = require('./routes/snapshot');
+var userRouter = require('./routes/user');
 var submitRouter = require('./routes/submit');
 
 var app = express();
@@ -34,8 +34,9 @@ app.all('/side', (req, res) => {
 
 //app.use('/', indexRouter);
 //app.use('/users', usersRouter);
-app.use('/api/start', indexRouter);
 app.use('/api/submit', submitRouter);
+app.use('/api/user', userRouter);
+app.use('/api/snapshot', snapshotRouter);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname +'/client/build/index.html'));

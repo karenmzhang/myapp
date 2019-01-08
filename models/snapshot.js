@@ -1,27 +1,27 @@
 module.exports = (sequelize, type) => {
-    return sequelize.define('snapshot'), {
+    return sequelize.define('snapshot', {
 	id: {
-	    type: Sequelize.INTEGER,
+	    type: type.INTEGER,
 	    primaryKey: true,
 	    autoIncrement: true
 	},
 	codeState: {
-	    type: Sequelize.STRING,
+	    type: type.STRING,
 	},
 	buttonPressed: {
-	    type: Sequelize.INTEGER,
+	    type: type.INTEGER,
 	},
 	level: {
-	    type: Sequelize.INTEGER,
+	    type: type.INTEGER,
 	},
 	testResults: {
-	    type: Sequelize.ARRAY(Sequelize.BOOLEAN),
+	    type: type.ARRAY(type.BOOLEAN),
 	},
 	cursorActivity: {
-	    Sequelize.JSONB,
+	    type: type.ARRAY(type.INTEGER)
 	},
-	startingDisplay: {
-	    Sequelize.JSONB,
+	output: {
+	    type: type.STRING,
 	},
-    }
+    })
 }
