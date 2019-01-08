@@ -4,7 +4,7 @@ const SnapshotModel = require('./snapshot');
 const {Client} = require('pg');
 
 
-const sequelize = new Sequelize('testdb', 'karenzhang', '', {
+var sequelize = new Sequelize('testdb', 'karenzhang', '', {
     host: 'localhost',
     dialect: 'postgres',
 });
