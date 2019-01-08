@@ -3,18 +3,18 @@ const UserModel = require('./user');
 const SnapshotModel = require('./snapshot');
 const {Client} = require('pg');
 
+
+const sequelize = new Sequelize('testdb', 'karenzhang', '', {
+    host: 'localhost',
+    dialect: 'postgres',
+});
 if (process.env.DATABASE_URL) {
-    const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
 	dialect:  'postgres',
 	protocol: 'postgres',
 	dialectOptions: {
 	    ssl: true
 	}
-    });
-} else {
-    const sequelize = new Sequelize('testdb', 'karenzhang', '', {
-	host: 'localhost',
-	dialect: 'postgres',
     });
 }
 
