@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import './styles/darcula.css';
 import {Controlled as CodeMirror} from 'react-codemirror2';
 require('codemirror/mode/clike/clike');
 
@@ -8,7 +9,7 @@ class App extends Component {
     constructor(props) {
 	super(props);
 	this.state = {
-	    code: '',
+	    code: 'public class Code {\n    public static void main(String[] args) {\n	//write your code here\n\n    }\n}',
 	    output: '',
 	    user: '',
 	    testResults: [false, false, false],
@@ -19,6 +20,7 @@ class App extends Component {
 	this.handleSubmit = this.handleSubmit.bind(this);
 	this.handleNewUser = this.handleNewUser.bind(this);
 	this.handleGetAllUsers = this.handleGetAllUsers.bind(this);
+	this.showLoadingMessage = this.showLoadingMessage.bind(this);
     }
 
     async componentDidMount() {
@@ -81,6 +83,7 @@ class App extends Component {
     }
 
     handleSubmit = async e => {
+	this.showLoadingMessage();
         e.preventDefault();
         const response = await fetch('/api/submit', {
             method: 'POST',
@@ -110,14 +113,24 @@ class App extends Component {
 	this.setState({cursorActivity: []});
     };
 
+    showLoadingMessage() {
+	this.setState({output: "Compiling and running your code..."});
+    }
+
     render() {
 	var options = {
 	    mode: 'text/x-java',
-	    lineNumbers: true
+	    lineNumbers: true,
+	    theme: 'darcula'
 	};
 	return (
+	    <div className = "level-box">
+	    <div className = "level-header">
+	    {"Level 0"}	    
+	    </div>
+	    <div className = "parent-container">
 	    <div className="codemirror-box">
-
+    
 	    <CodeMirror
 	    value={this.state.code}
 	    options={options}
@@ -127,7 +140,7 @@ class App extends Component {
 	    onChange={(editor, data, value) => {
 		//console.log(editor.getCursor().line);
 		//console.log(editor.getCursor().ch);
-		if (editor.getCursor().line != this.state.cursorActivity[this.state.cursorActivity.length -1]) {
+		if (editor.getCursor().line !== this.state.cursorActivity[this.state.cursorActivity.length -1]) {
 		    this.setState({
 			cursorActivity: [...this.state.cursorActivity, editor.getCursor().line]});
 
@@ -146,7 +159,11 @@ class App extends Component {
 	    <form onSubmit={this.handleGetAllUsers}>
 	    <input type="submit" value = "show all users" id="getUsers"/>
 	    </form>
-	    <pre>{this.state.output}</pre>
+	    </div>
+	    <div className = "output-box">
+	    <pre className = "word-wrap-needed">{this.state.output}</pre>
+	    </div>
+	    </div>
 	    </div>
 	);
     }

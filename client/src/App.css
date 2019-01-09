@@ -19,11 +19,37 @@
   color: #61dafb;
 }
 
-.codemirror-box {
-    padding: 10;
+.level-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #222222;
 }
 
-pre {
+.level-header {
+    height: 8vh;
+    font-size: 30px;
+    color: white;
+}
+
+.parent-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.codemirror-box {
+    width: 60vw;
+    height:92vh;
+}
+
+.output-box {
+    width: 40vw;
+    height:92vh;
+    padding: 5px;
+    color: white;
+}
+
+.word-wrap-needed{
     white-space: pre-wrap;       /* Since CSS 2.1 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
     white-space: -pre-wrap;      /* Opera 4-6 */
