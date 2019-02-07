@@ -36,7 +36,10 @@ router.post('/', (req, res) => {
 	if (code === 0) {
 	    responseText = "Compilation sucessful.\nOutput: "
 	    //    console.log("inside javaa block");
-	    var javaa = spawn('java', ["-cp", __dirname, 'Code']);
+	    //    TODO: add req.body.args as a field passed by the react app
+	    //    TODO: append args to this variable and then pass it to the spawn function
+	    //var args = ["-cp", __dirname, "Code"];
+	    var javaa = spawn('java', ["-cp", __dirname, 'Code', '6']);
 
 	    javaa.on('exit', function (code, signal) {
 		console.log('child process exited with ' +`code ${code} and signal ${signal}`);
@@ -58,11 +61,11 @@ router.post('/', (req, res) => {
 	    });
 	    
 	    javaa.on('close', () => {
-		responseText += 'Submitted at: ' + req.requestTime + '\n';
+		//responseText += 'Submitted at: ' + req.requestTime + '\n';
 		res.send(responseText);
 	    });
 	} else {
-	    responseText += 'Submitted at: ' + req.requestTime + '\n';
+	    //responseText += 'Submitted at: ' + req.requestTime + '\n';
 	    res.send(responseText);
 	    console.log('code was not 0');
 	}
