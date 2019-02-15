@@ -39,7 +39,9 @@ class App extends Component {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
-            body: JSON.stringify({code: this.state.code}),
+            body: JSON.stringify({
+		code: this.state.code}),
+	    
         });
         const body = await response.text();
 
@@ -103,7 +105,9 @@ class App extends Component {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
-            body: JSON.stringify({code: this.state.code}),
+            body: JSON.stringify({
+		code: this.state.code,
+		args: this.state.customInput}),
         });
         const body = await response.text();
 

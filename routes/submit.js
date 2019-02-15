@@ -39,7 +39,12 @@ router.post('/', (req, res) => {
 	    //    TODO: add req.body.args as a field passed by the react app
 	    //    TODO: append args to this variable and then pass it to the spawn function
 	    //var args = ["-cp", __dirname, "Code"];
-	    var javaa = spawn('java', ["-cp", __dirname, 'Code', '6']);
+	    if (req.body.args) {
+		var javaa = spawn('java', ["-cp", __dirname, 'Code', req.body.args]);
+	    } 
+	    else {
+		var javaa = spawn('java', ["-cp", __dirname, 'Code']);
+	    }
 
 	    javaa.on('exit', function (code, signal) {
 		console.log('child process exited with ' +`code ${code} and signal ${signal}`);
