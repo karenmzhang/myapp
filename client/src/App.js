@@ -31,9 +31,10 @@ class App extends Component {
 	this.showLoadingMessage = this.showLoadingMessage.bind(this);
 	this.handleCustomInput = this.handleCustomInput.bind(this);
 	this.handleCustomSubmit = this.handleCustomSubmit.bind(this);
+	this.handleLogin = this.handleLogin.bind(this);
     }
 
-    async componentDidMount() {
+/*    async componentDidMount() {
 	console.log(this.state.code);
         const response = await fetch('/api/submit', {
             method: 'POST',
@@ -64,6 +65,18 @@ class App extends Component {
 	//this.callApi()
 	//    .then(res => {})
 	//    .catch(err => console.log(err));
+    }*/
+    
+    handleLogin = async e => {
+	e.preventDefault();
+	window.location = "https://fed.princeton.edu/cas/login?service=http://localhost:3000";
+	/*
+	const response = await fetch('/api/auth/login', {
+	    method: 'GET',
+	});
+	const body = await response.text();
+	console.log(body);
+	*/
     }
 
     handleGetAllUsers = async e => {
@@ -182,64 +195,77 @@ class App extends Component {
 	    lineNumbers: true,
 	    theme: 'darcula'
 	};
-	return (
-	    <MuiThemeProvider theme={theme}>
+	if (this.state.user) {
+	    return (
+		<MuiThemeProvider theme={theme}>
 		<div className = "level-box">
-		    <div className = "level-header">
-			{"Level 0"}	    
-		    </div>
-		    <div className = "parent-container">
-			<div className="codemirror-box">
-    
-			    <CodeMirror
-				value={this.state.code}
-				options={options}
-				onBeforeChange={(editor, data, value) => {
-				this.setState({code:value});
-				}}	
-				onChange={(editor, data, value) => {
-		//console.log(editor.getCursor().line);
-		//console.log(editor.getCursor().ch);
-				if (editor.getCursor().line !== this.state.cursorActivity[this.state.cursorActivity.length -1]) {
-				    this.setState({
-				    cursorActivity: [...this.state.cursorActivity, editor.getCursor().line]});
-
-				}
-		//	console.log(editor.getCursor());
-		//console.log(this.state.cursorActivity);
-				}}
-			    />
-			</div>
-			<div className = "output-box">
-			    <div className = "instructions-box">
-				<pre className = "word-wrap-needed">{this.state.output}</pre>
-			    </div>
-			    <div className = "button-container">
-				<div className = "input-container">
-				    <Input id="custom-input" variant = "filled" disableUnderline = {true} fullWidth = {true} placeholder = "Enter custom inputs" value={this.state.customInput} onChange={this.handleCustomInput} />
-				</div>
-				<div className = "button-padding">
-				    <Button variant = "contained" color = "secondary" onClick = {this.handleCustomSubmit}>
-				    Run_custom_input
-				    </Button>
-				</div>
-			    </div>	
-			    <div className = "button-container">
-				<Button variant = "contained" color = "secondary" onClick = {this.handleSubmit}>
-				Run all tests
-				</Button>
-				<Button variant = "contained" color = "primary" onClick = {this.handleSubmit}>
-				Next level
-				</Button>
-				<Button variant = "contained" onClick = {this.handleSubmit}>
-				Reset
-				</Button>
-			    </div>	
-			</div>
-		    </div>
+		<div className = "level-header">
+		{"Level 0"}	    
 		</div>
-	    </MuiThemeProvider>
-	);
+		<div className = "parent-container">
+		<div className="codemirror-box">
+
+		<CodeMirror
+		value={this.state.code}
+		options={options}
+		onBeforeChange={(editor, data, value) => {
+		    this.setState({code:value});
+		}}	
+		onChange={(editor, data, value) => {
+		    //console.log(editor.getCursor().line);
+		    //console.log(editor.getCursor().ch);
+		    if (editor.getCursor().line !== this.state.cursorActivity[this.state.cursorActivity.length -1]) {
+			this.setState({
+			    cursorActivity: [...this.state.cursorActivity, editor.getCursor().line]});
+
+		    }
+		    //	console.log(editor.getCursor());
+		    //console.log(this.state.cursorActivity);
+		}}
+		/>
+		</div>
+		<div className = "output-box">
+		<div className = "instructions-box">
+		<pre className = "word-wrap-needed">{this.state.output}</pre>
+		</div>
+		<div className = "button-container">
+		<div className = "input-container">
+		<Input id="custom-input" variant = "filled" disableUnderline = {true} fullWidth = {true} placeholder = "Enter custom inputs" value={this.state.customInput} onChange={this.handleCustomInput} />
+		</div>
+		<div className = "button-padding">
+		<Button variant = "contained" color = "secondary" onClick = {this.handleCustomSubmit}>
+		Run_custom_input
+		</Button>
+		</div>
+		</div>	
+		<div className = "button-container">
+		<Button variant = "contained" color = "secondary" onClick = {this.handleSubmit}>
+		Run all tests
+		</Button>
+		<Button variant = "contained" color = "primary" onClick = {this.handleSubmit}>
+		Next level
+		</Button>
+		<Button variant = "contained" onClick = {this.handleSubmit}>
+		Reset
+		</Button>
+		</div>	
+		</div>
+		</div>
+		</div>
+		</MuiThemeProvider>
+	    );
+	}
+	else {
+	    return(	
+		<MuiThemeProvider theme={theme}>
+		<div className = "login-box">
+		<Button variant = "contained" color = "secondary" onClick = {this.handleLogin}>
+		Log in
+		</Button>
+		</div>
+		</MuiThemeProvider>
+	    );
+	}
     }
 }
 

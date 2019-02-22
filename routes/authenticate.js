@@ -7,7 +7,8 @@ var casURL = 'https://fed.princeton.edu/cas/';
 
 // what should this be? if it's just redirecting back to the homepage, or is it 
 // redirecting to something that should be the server? in that case, process.env.port or localhost 5000?
-var myservice = process.env.DATABASE_URL ? process.env.DATABASE_URL : "http://localhost:3000";
+var myservice = process.env.DATABASE_URL ? "http://debuggr.herokuapp.com" : "http://localhost:3000";
+var myproxy = "http://localhost:5000";
 
 var cas = new CentralAuthenticationService({
     base_url: casURL,
@@ -18,7 +19,7 @@ var cas = new CentralAuthenticationService({
   next()
 })
 
-router.get('*', (req, res) => {
+/*router.get('*', (req, res) => {
     var ticket = req.query.ticket;
     if (typeof (ticket) === 'undefined') {
 	res.redirect('/');
@@ -37,16 +38,17 @@ router.get('*', (req, res) => {
 
 	res.redirect('/');
     })
-})
+})*/
 
 router.get('/login', (req, res) => {
-    res.redirect(casURL + 'login?service=' + myservice);
+    console.log("redirecting");
+    res.redirect(casURL + 'login?service=' + myservice + "/api/auth/verify");
+    res.send("tried to redirect");
 })
 
-router.get('/verify', (req, res) => {
-    var ticket = req.query.ticket;
+router.post('/verify', (req, res) => {
+    var ticket = req.body.ticket;
     if (typeof (ticket) === 'undefined') {
-	res.redirect('/');
 	return;
     }
     cas.validate(ticket, (err, status, netid) => {
@@ -55,12 +57,14 @@ router.get('/verify', (req, res) => {
 	    res.sendStatus(500);
 	    return;
 	}
-
+	console.log(status);
+	console.log(netid);
+/*
 	User.findOrCreate({
 	    where: {netid: 'netid'}
 	}).then();
-
-	res.redirect('/');
+*/
+	res.send({status: status, netid: netid});
     })
 })
 
