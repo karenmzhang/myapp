@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Routes from './Routes';
+import Fakeroute from './Fakeroute';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter as Router} from 'react-router-dom';
 
 
 ReactDOM.render(
     <Router>
-    <Routes /> 
+    <Fakeroute /> 
     </Router>,
     document.getElementById('root')
 );
