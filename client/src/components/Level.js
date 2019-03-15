@@ -9,18 +9,26 @@ import red from '@material-ui/core/colors/red';
 import '../styles/darcula.css';
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import {Redirect} from 'react-router-dom';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContentText from '@material-ui/core/DialogContentText';
 require('codemirror/mode/clike/clike');
 
 class Level extends Component {
     constructor(props) {
         super(props);
 	this.state = {
-            code: 'public class Code {\n    public static void main(String[] args) {\n  //write your code here\n\n    }\n}',
+	    instructions: 'Instructions: Print N question marks in a row, where N is given as a command line argument. You may assume that N will be an integer. If N is negative, do not print any question marks. \n\nExample: \nN = 6 \nOutput = ?????? \n',
+            code: 'public class Code {\n  public static void main(String[] args) {\n    //write your code here\n\n  }\n}',
             output: '',
             user: '',
             testResults: [false, false, false],
             cursorActivity: [],
             customInput: '',
+	    customInputDialog: false,
+	    allTestsDialog: false,
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,6 +39,27 @@ class Level extends Component {
 	this.handleRunAllTests = this.handleRunAllTests.bind(this);
 	this.handleNextLevel = this.handleNextLevel.bind(this);
 	this.handleReset = this.handleReset.bind(this);
+	this.passingAnyTests = this.passingAnyTests.bind(this);
+	this.closeCustomInputDialog = this.closeCustomInputDialog.bind(this);
+	this.closeAllTestsDialog = this.closeAllTestsDialog.bind(this);
+    }
+
+    closeCustomInputDialog() {
+	this.setState({customInputDialog: false});
+    }
+
+    closeAllTestsDialog() {
+	this.setState({allTestsDialog: false});
+    }
+
+    passingAnyTests() {
+	const arr = this.state.testResults;
+	for (let i = 0; i < arr.length; i++) {
+	    if (arr[i]) {
+		return true;
+	    }
+	}
+	return false;
     }
 
     handleNewUser() {
@@ -39,6 +68,7 @@ class Level extends Component {
 
     handleRunAllTests = event => {
 
+	this.setState({allTestsDialog: true});
     }
 
     handleNextLevel = event => {
@@ -67,6 +97,7 @@ class Level extends Component {
         const body = await response.text();
 
         this.setState({output: body});
+	this.setState({customInputDialog: true});
 
         const response2 = await fetch('/api/snapshot', {
             method: 'POST',
@@ -178,6 +209,50 @@ class Level extends Component {
 			{"Level 0"}
 		    </div>
 		    <div className = "parent-container">
+			<div>
+			    <Dialog
+				open={this.state.customInputDialog}
+				onClose={this.closeCustomInputDialog}
+				disableBackdropClick = {true}
+				fullWidth = {true}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			    >
+				<DialogTitle id="alert-dialog-title">{"Custom Input Results:"}</DialogTitle>
+				<DialogContent>
+				    <pre className = "word-wrap-needed">{this.state.output}</pre>
+				</DialogContent>
+				<DialogActions>
+				    <Button onClick={this.closeCustomInputDialog} color="primary">
+				    Close
+				    </Button>
+				</DialogActions>
+			    </Dialog>
+			</div>
+			<div>
+			    <Dialog
+				open={this.state.allTestsDialog}
+				onClose={this.closeAllTestsDialog}
+				disableBackdropClick = {true}
+				fullWidth = {true}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			    >
+				<DialogTitle id="alert-dialog-title">{"Test Results:"}</DialogTitle>
+				<DialogContent>
+				    <pre className = "word-wrap-needed">{this.state.output}</pre>
+				</DialogContent>
+				<DialogActions>
+				    <Button onClick={this.closeAllTestsDialog} color="primary"
+					disabled = {!this.passingAnyTests()}>
+				    Next Level
+				    </Button>
+				    <Button onClick={this.closeAllTestsDialog} color="primary">
+				    Close
+				    </Button>
+				</DialogActions>
+			    </Dialog>
+			</div>
 			<div className="codemirror-box">
 
 			    <CodeMirror
@@ -197,14 +272,14 @@ class Level extends Component {
 			</div>
 			<div className = "output-box">
 			    <div className = "instructions-box">
-				<pre className = "word-wrap-needed">{this.state.output}</pre>
+			    {this.state.instructions}
 			    </div>
 			    <div className = "button-container">
 				<div className = "input-container">
 				    <Input id="custom-input" variant = "filled" disableUnderline = {true} fullWidth = {true} placeholder = "Enter custom inputs" value={this.state.customInput} onChange={this.handleCustomInput} />
 				</div>
 				<div className = "button-padding">
-				    <Button variant = "contained" color = "secondary" display = "flex" flexWrap = "nowrap" style={{width: '175px'}} onClick = {this.handleCustomSubmit}>
+				    <Button variant = "contained" color = "secondary" display = "flex" flexwrap = "nowrap" style={{width: '175px'}} onClick = {this.handleCustomSubmit}>
 				    Run custom input
 				    </Button>
 				</div>
@@ -213,7 +288,7 @@ class Level extends Component {
 				<Button variant = "contained" color = "secondary" onClick = {this.handleRunAllTests}>
 				Run all tests
 				</Button>
-				<Button variant = "contained" color = "primary" onClick = {this.handleNextLevel}>
+				<Button variant = "contained" color = "primary" disabled = {!this.passingAnyTests()} style = {this.passingAnyTests() ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
 				Next level
 				</Button>
 				<Button variant = "contained" onClick = {this.handleReset} style ={{backgroundColor: "#d32f2f"}}>
