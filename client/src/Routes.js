@@ -10,12 +10,9 @@ class Routes extends Component {
 	return (
 	    <div>
 	    <Switch>
-	    <Route exact path ="/login" component = {Login} />
+	    <Route exact path ="/" component = {Login} />
 	    <Route exact path = "/validate" component = {Validate} />
 	    <Route exact path = "/level" component = {Level} />
-	    <Route exact path = "/">
-	    <Redirect to="/login" />
-	    </Route>
 	    <Route component ={Nomatch}/>
 	    </Switch>
 	    </div>

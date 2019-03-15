@@ -8,6 +8,7 @@ import orange from '@material-ui/core/colors/orange';
 import red from '@material-ui/core/colors/red';
 import '../styles/darcula.css';
 import {Controlled as CodeMirror} from 'react-codemirror2';
+import {Redirect} from 'react-router-dom';
 require('codemirror/mode/clike/clike');
 
 class Level extends Component {
@@ -143,7 +144,14 @@ class Level extends Component {
 	    .then(console.log(response));
 	    
     }*/
-
+/*
+    componentDidMount() {
+	// need to use props instead of set state for this.
+	const newuser = this.props.location.state.user;
+	this.setState({user: newuser});
+	console.log(this.state.user);
+    }
+*/
     render() {
         const theme = createMuiTheme({
             palette: {
@@ -159,7 +167,11 @@ class Level extends Component {
             theme: 'darcula'
         };
 
-	return(
+	if (!this.props.location.state.user) {
+	    return <Redirect to="/"/>;
+	}
+	else {
+	    return(
             <MuiThemeProvider theme={theme}>
                 <div className = "level-box">
 		    <div className = "level-header">
@@ -192,8 +204,8 @@ class Level extends Component {
 				    <Input id="custom-input" variant = "filled" disableUnderline = {true} fullWidth = {true} placeholder = "Enter custom inputs" value={this.state.customInput} onChange={this.handleCustomInput} />
 				</div>
 				<div className = "button-padding">
-				    <Button variant = "contained" color = "secondary" onClick = {this.handleCustomSubmit}>
-				    Run_custom_input
+				    <Button variant = "contained" color = "secondary" display = "flex" flexWrap = "nowrap" style={{width: '175px'}} onClick = {this.handleCustomSubmit}>
+				    Run custom input
 				    </Button>
 				</div>
 			    </div>
@@ -204,15 +216,15 @@ class Level extends Component {
 				<Button variant = "contained" color = "primary" onClick = {this.handleNextLevel}>
 				Next level
 				</Button>
-				<Button variant = "contained" onClick = {this.handleReset}>
-				Reset
+				<Button variant = "contained" onClick = {this.handleReset} style ={{backgroundColor: "#d32f2f"}}>
+				Reset Code
 				</Button>
 			    </div>
 			</div>
 		    </div>
                 </div>
             </MuiThemeProvider>
-        );
+        );}
     }
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Routes from './Routes';
+import Login from './components/Login';
 import Fakeroute from './Fakeroute';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter as Router} from 'react-router-dom';
@@ -9,7 +10,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 
 ReactDOM.render(
     <Router>
-    <Fakeroute /> 
+    <Routes /> 
     </Router>,
     document.getElementById('root')
 );
