@@ -22,6 +22,7 @@ class Level extends Component {
 	this.state = {
 	    instructions: 'Instructions: Print N question marks in a row, where N is given as a command line argument. You may assume that N will be an integer. If N is negative, do not print any question marks. \n\nExample: \nN = 6 \nOutput = ?????? \n',
             code: 'public class Code {\n  public static void main(String[] args) {\n    //write your code here\n\n  }\n}',
+	    initialCode:'public class Code {\n  public static void main(String[] args) {\n    //write your code here\n\n  }\n}',
             output: '',
             user: '',
             testResults: [false, false, false],
@@ -66,8 +67,34 @@ class Level extends Component {
 
     }
 
-    handleRunAllTests = event => {
+    handleRunAllTests = async e => {
+        e.preventDefault();
+        const response = await fetch('/api/runTests', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                code: this.state.code}),
+        });
+        const body = await response.text();
 
+        this.setState({output: body});
+	this.setState({customInputDialog: true});
+
+        /*const response2 = await fetch('/api/snapshot', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                codeState: this.state.code,
+                buttonPressed: 0,
+                level: 0,
+                testResults: this.state.testResults,
+                output: this.state.output,
+                cursorActivity: this.state.cursorActivity,
+            }),
+        });*/
+        this.setState({cursorActivity: []});
 	this.setState({allTestsDialog: true});
     }
 
@@ -76,7 +103,8 @@ class Level extends Component {
     }
 
     handleReset = event => {
-	this.setState({code: 'public class Code {\n    public static void main(String[] args) {\n  //write your code here\n\n        }\n}'});
+	const initialCode = this.state.initialCode;
+	this.setState({code: initialCode}); 
     }
 
     handleCustomInput = event => {

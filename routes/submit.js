@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
 
     javac.on('close', (code) => {
 	if (code === 0) {
-	    responseText = "Compilation sucessful.\nOutput: "
+	    responseText = ""
 	    //    console.log("inside javaa block");
 	    //    TODO: add req.body.args as a field passed by the react app
 	    //    TODO: append args to this variable and then pass it to the spawn function

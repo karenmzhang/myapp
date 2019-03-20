@@ -8,6 +8,7 @@ var snapshotRouter = require('./routes/snapshot');
 var userRouter = require('./routes/user');
 var submitRouter = require('./routes/submit');
 var authRouter = require('./routes/authenticate');
+var testRouter = require('./routes/runTests');
 
 var app = express();
 
@@ -46,7 +47,7 @@ app.use('/api/submit', submitRouter);
 app.use('/api/user', userRouter);
 app.use('/api/snapshot', snapshotRouter);
 app.use('/api/auth', authRouter.router);
-
+app.use('/api/runTests', testRouter);
 
 app.get('*', (req, res) => {
     //res.sendFile(path.join(__dirname +'/client/build/index.html'));
