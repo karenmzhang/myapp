@@ -14,6 +14,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 require('codemirror/mode/clike/clike');
 
 class Level extends Component {
@@ -275,10 +281,40 @@ class Level extends Component {
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			    >
+				<Paper>
 				<DialogTitle id="alert-dialog-title">{"Test Results:"}</DialogTitle>
+				</Paper>
 				<DialogContent>
-				    passed {}
-				    <pre className = "word-wrap-needed">{this.state.output}</pre>
+				    <Table>
+					<TableHead>
+					    <TableRow>
+						<TableCell>Result</TableCell>
+					    </TableRow>
+					</TableHead>
+					<TableBody>
+					    <TableRow>
+						<TableCell>{this.state.testResults[0]} </TableCell>
+					    </TableRow>
+		
+					    <TableRow>
+						<TableCell> {this.state.testResults[1]}</TableCell>
+					    </TableRow>
+		
+					    <TableRow>
+						<TableCell>  {this.state.testResults[2]}</TableCell>
+					    </TableRow>
+
+					    <TableRow>
+						<TableCell> { this.state.testResults[3]}</TableCell>
+					    </TableRow>
+					    
+					    <TableRow>
+						<TableCell align = "right" > 
+						    Summary: passed {this.state.numberTestsPassing}/{this.state.testResults.length} tests
+						</TableCell>
+					    </TableRow>
+					</TableBody>
+				    </Table>
 				</DialogContent>
 				<DialogActions>
 				    <Button onClick={this.closeAllTestsDialog} color="primary"
