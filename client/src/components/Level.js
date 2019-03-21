@@ -25,7 +25,8 @@ class Level extends Component {
 	    initialCode:'public class Code {\n  public static void main(String[] args) {\n    //write your code here\n\n  }\n}',
             output: '',
             user: '',
-            testResults: [false, false, false],
+            testResults: ["fail"],
+	    numberTestsPassing: 0,
             cursorActivity: [],
             customInput: '',
 	    customInputDialog: false,
@@ -40,9 +41,26 @@ class Level extends Component {
 	this.handleRunAllTests = this.handleRunAllTests.bind(this);
 	this.handleNextLevel = this.handleNextLevel.bind(this);
 	this.handleReset = this.handleReset.bind(this);
-	this.passingAnyTests = this.passingAnyTests.bind(this);
 	this.closeCustomInputDialog = this.closeCustomInputDialog.bind(this);
 	this.closeAllTestsDialog = this.closeAllTestsDialog.bind(this);
+	this.countTestsPassing = this.countTestsPassing.bind(this);
+    }
+
+    countTestsPassing() {
+	const arr = this.state.testResults;
+	let count = 0;
+	for (let i = 0; i < arr.length; i++) {
+	    if (arr[i].trim() === "pass".trim()) {
+		count++;
+	    }
+	    else {
+		console.log(arr[i]);
+		console.log("pass");
+	    }
+	}
+	console.log(count);
+	this.setState({numberTestsPassing: count});
+	return count;
     }
 
     closeCustomInputDialog() {
@@ -51,16 +69,6 @@ class Level extends Component {
 
     closeAllTestsDialog() {
 	this.setState({allTestsDialog: false});
-    }
-
-    passingAnyTests() {
-	const arr = this.state.testResults;
-	for (let i = 0; i < arr.length; i++) {
-	    if (arr[i]) {
-		return true;
-	    }
-	}
-	return false;
     }
 
     handleNewUser() {
@@ -79,8 +87,9 @@ class Level extends Component {
         const body = await response.text();
 
         this.setState({output: body});
-	this.setState({customInputDialog: true});
 
+	this.setState({testResults: body.split(",")});
+	this.countTestsPassing();
         /*const response2 = await fetch('/api/snapshot', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
@@ -268,11 +277,12 @@ class Level extends Component {
 			    >
 				<DialogTitle id="alert-dialog-title">{"Test Results:"}</DialogTitle>
 				<DialogContent>
+				    passed {}
 				    <pre className = "word-wrap-needed">{this.state.output}</pre>
 				</DialogContent>
 				<DialogActions>
 				    <Button onClick={this.closeAllTestsDialog} color="primary"
-					disabled = {!this.passingAnyTests()}>
+					disabled = {this.state.numberTestsPassing > 0? false : true}>
 				    Next Level
 				    </Button>
 				    <Button onClick={this.closeAllTestsDialog} color="primary">
@@ -316,7 +326,7 @@ class Level extends Component {
 				<Button variant = "contained" color = "secondary" onClick = {this.handleRunAllTests}>
 				Run all tests
 				</Button>
-				<Button variant = "contained" color = "primary" disabled = {!this.passingAnyTests()} style = {this.passingAnyTests() ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
+				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
 				Next level
 				</Button>
 				<Button variant = "contained" onClick = {this.handleReset} style ={{backgroundColor: "#d32f2f"}}>

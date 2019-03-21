@@ -16,24 +16,24 @@ public class Test {
     int[] solutions = {5, -6, 26, 0};
 
     if (Code.arraySum(case1) != solutions[0]) {
-      result += "fail\n";
+      result += "fail,";
     }
-    else {result += "pass\n";}
+    else {result += "pass,";}
 
     if (Code.arraySum(case2) != solutions[1]) {
-      result += "fail\n";
+      result += "fail,";
     }
-    else {result += "pass\n";}
+    else {result += "pass,";}
 
     if (Code.arraySum(case3) != solutions[2]) {
-      result += "fail\n";
+      result += "fail,";
     }
-    else {result += "pass\n";}
+    else {result += "pass,";}
 
     if (Code.arraySum(case4) != solutions[3]) {
-      result += "fail\n";
+      result += "fail";
     }
-    else {result += "pass\n";}
+    else {result += "pass";}
 
     System.out.println(result);
 

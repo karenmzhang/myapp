@@ -1,3 +1,5 @@
 node_modules/
 routes/Code.java
 routes/Code.class
+.DS_Store
+routes/.DS_Store
