@@ -20,18 +20,22 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import {levelData} from './levelData.js';
 require('codemirror/mode/clike/clike');
 
 class Level extends Component {
     constructor(props) {
         super(props);
+	/*'Instructions: Print N question marks in a row, where N is given as a command line argument. You may assume that N will be an integer. If N is negative, do not print any question marks. \n\nExample: \nN = 6 \nOutput = ?????? \n'*/
 	this.state = {
-	    instructions: 'Instructions: Print N question marks in a row, where N is given as a command line argument. You may assume that N will be an integer. If N is negative, do not print any question marks. \n\nExample: \nN = 6 \nOutput = ?????? \n',
-            code: 'public class Code {\n  public static void main(String[] args) {\n    //write your code here\n\n  }\n}',
-	    initialCode:'public class Code {\n  public static void main(String[] args) {\n    //write your code here\n\n  }\n}',
+	    levelNumber: 0,
+	    instructions: levelData.description[0],
+            code: levelData.starterCode[0],
+	    initialCode:levelData.starterCode[0],
+	    methondName: levelData.methodName[0],
             output: '',
             user: '',
-            testResults: ["fail"],
+            testResults: ["fail", "fail", "fail", "fail"],
 	    numberTestsPassing: 0,
             cursorActivity: [],
             customInput: '',
@@ -50,13 +54,23 @@ class Level extends Component {
 	this.closeCustomInputDialog = this.closeCustomInputDialog.bind(this);
 	this.closeAllTestsDialog = this.closeAllTestsDialog.bind(this);
 	this.countTestsPassing = this.countTestsPassing.bind(this);
+	this.setTestResults = this.setTestResults.bind(this);
+    }
+
+    setTestResults(s) {
+	let arr = s.split(',');
+	let arr2 = new Array(arr.length);
+	for (let i = 0; i < arr.length; i++) {
+	    arr2[i] = arr[i].split(';');
+	}
+	this.setState({testResults: arr2});
     }
 
     countTestsPassing() {
 	const arr = this.state.testResults;
 	let count = 0;
 	for (let i = 0; i < arr.length; i++) {
-	    if (arr[i].trim() === "pass".trim()) {
+	    if (arr[i][3].trim() === "pass".trim()) {
 		count++;
 	    }
 	    else {
@@ -88,13 +102,15 @@ class Level extends Component {
             headers: {'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                code: this.state.code}),
+                code: this.state.code,
+		level: this.state.levelNumber}),
         });
         const body = await response.text();
 
-        this.setState({output: body});
-
-	this.setState({testResults: body.split(",")});
+        //this.setState({output: body});
+	this.setTestResults(body);
+	//this.setTestResults("6;??????;?;fail,1;?;?;pass,0;;?;fail,-1;;?;fail");
+	//this.setState({testResults: body.split(",")});
 	this.countTestsPassing();
         /*const response2 = await fetch('/api/snapshot', {
             method: 'POST',
@@ -288,28 +304,23 @@ class Level extends Component {
 				    <Table>
 					<TableHead>
 					    <TableRow>
+						<TableCell>Input</TableCell>
+						<TableCell>Correct Output</TableCell>
+						<TableCell>Your Output</TableCell>
 						<TableCell>Result</TableCell>
 					    </TableRow>
 					</TableHead>
 					<TableBody>
+					    {this.state.testResults.map(row => (
+						<TableRow style = {row[3].trim() === "pass"? {backgroundColor: "#c8e6c9"}: {backgroundColor: "#ffcdd2"}}>
+						    <TableCell>{row[0]}</TableCell>
+						    <TableCell>{row[1]}</TableCell>
+						    <TableCell>{row[2]}</TableCell>
+						    <TableCell>{row[3]}</TableCell>
+						</TableRow>
+					    ))}	    
 					    <TableRow>
-						<TableCell>{this.state.testResults[0]} </TableCell>
-					    </TableRow>
-		
-					    <TableRow>
-						<TableCell> {this.state.testResults[1]}</TableCell>
-					    </TableRow>
-		
-					    <TableRow>
-						<TableCell>  {this.state.testResults[2]}</TableCell>
-					    </TableRow>
-
-					    <TableRow>
-						<TableCell> { this.state.testResults[3]}</TableCell>
-					    </TableRow>
-					    
-					    <TableRow>
-						<TableCell align = "right" > 
+						<TableCell colSpan={4} align = "right" > 
 						    Summary: passed {this.state.numberTestsPassing}/{this.state.testResults.length} tests
 						</TableCell>
 					    </TableRow>
