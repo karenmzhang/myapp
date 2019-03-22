@@ -59,10 +59,14 @@ class Level extends Component {
 
     setTestResults(s) {
 	let arr = s.split(',');
-	let arr2 = new Array(arr.length);
+	let arr2 = [];
 	for (let i = 0; i < arr.length; i++) {
-	    arr2[i] = arr[i].split(';');
+	    if (arr[i] !== "") {
+		arr2.push( arr[i].split(';'));
+		console.log(arr2[i]);
+	    }
 	}
+	console.log(arr2.length);
 	this.setState({testResults: arr2});
     }
 
@@ -74,11 +78,11 @@ class Level extends Component {
 		count++;
 	    }
 	    else {
-		console.log(arr[i]);
-		console.log("pass");
+		//console.log(arr[i]);
+		//console.log("pass");
 	    }
 	}
-	console.log(count);
+	//console.log(count);
 	this.setState({numberTestsPassing: count});
 	return count;
     }
@@ -108,6 +112,8 @@ class Level extends Component {
         const body = await response.text();
 
         //this.setState({output: body});
+	//console.log(body);
+	console.log(body.split(","));
 	this.setTestResults(body);
 	//this.setTestResults("6;??????;?;fail,1;?;?;pass,0;;?;fail,-1;;?;fail");
 	//this.setState({testResults: body.split(",")});
