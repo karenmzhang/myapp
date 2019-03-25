@@ -5,12 +5,13 @@ public class Test0_0 {
     String ret  = "6;??????;";
     String expected = "??????";
     String result = Code.printQuestionMarks(6);
+    char escape = 7;
 
     if (result.equals(expected)) {
-      ret += result + ";pass," ;
+      ret += result + ";pass" + Character.toString(escape);
     }
     else {
-        ret += result + ";fail,";
+        ret += result + ";fail" + Character.toString(escape);
     }
 
     System.out.print(ret);

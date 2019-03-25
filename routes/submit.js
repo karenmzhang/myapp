@@ -16,8 +16,8 @@ router.post('/', (req, res) => {
       });
      */
 
-    var fileName = __dirname + "/Code.java";
-    var compiledFileName = __dirname + "/Code";
+    var fileName = __dirname + "/Tests" + "/Code.java";
+    var compiledFileName = __dirname + "/Tests" + "/Code";
     var opts = {stdio: 'inherit'};
     //    console.log(fileName);
     fs.writeFileSync(fileName, req.body.code);
@@ -40,10 +40,10 @@ router.post('/', (req, res) => {
 	    //    TODO: append args to this variable and then pass it to the spawn function
 	    //var args = ["-cp", __dirname, "Code"];
 	    if (req.body.args) {
-		var javaa = spawn('java', ["-cp", __dirname, 'Code', req.body.args]);
+		var javaa = spawn('java', ["-cp", __dirname + "/Tests", 'Code', req.body.args]);
 	    } 
 	    else {
-		var javaa = spawn('java', ["-cp", __dirname, 'Code']);
+		var javaa = spawn('java', ["-cp", __dirname + "/Tests", 'Code']);
 	    }
 
 	    javaa.on('exit', function (code, signal) {

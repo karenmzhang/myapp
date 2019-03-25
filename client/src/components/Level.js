@@ -35,7 +35,7 @@ class Level extends Component {
 	    methondName: levelData.methodName[0],
             output: '',
             user: '',
-            testResults: ["fail", "fail", "fail", "fail"],
+            testResults: [";;;fail"],
 	    numberTestsPassing: 0,
             cursorActivity: [],
             customInput: '',
@@ -58,7 +58,8 @@ class Level extends Component {
     }
 
     setTestResults(s) {
-	let arr = s.split(',');
+	const separator = '\x07';
+	let arr = s.split(separator);
 	let arr2 = [];
 	for (let i = 0; i < arr.length; i++) {
 	    if (arr[i] !== "") {
@@ -113,7 +114,8 @@ class Level extends Component {
 
         //this.setState({output: body});
 	//console.log(body);
-	console.log(body.split(","));
+	const separator = '\x07';
+	console.log(body.split(separator));
 	this.setTestResults(body);
 	//this.setTestResults("6;??????;?;fail,1;?;?;pass,0;;?;fail,-1;;?;fail");
 	//this.setState({testResults: body.split(",")});
@@ -136,7 +138,19 @@ class Level extends Component {
     }
 
     handleNextLevel = event => {
-
+	let currentLevelNumber = this.state.levelNumber;
+	this.setState({	levelNumber: currentLevelNumber+1,
+			instructions: levelData.description[currentLevelNumber+1],
+			code: levelData.starterCode[currentLevelNumber+1],
+			initialCode:levelData.starterCode[currentLevelNumber+1],
+			methondName: levelData.methodName[currentLevelNumber+1],
+			testResults: [";;;fail"],
+			numberTestsPassing: 0,
+			cursorActivity: [],
+			customInput: '',
+			customInputDialog: false,
+			allTestsDialog: false,
+           });
     }
 
     handleReset = event => {
@@ -271,7 +285,7 @@ class Level extends Component {
             <MuiThemeProvider theme={theme}>
                 <div className = "level-box">
 		    <div className = "level-header">
-			{"Level 0"}
+			{"Level " + this.state.levelNumber}
 		    </div>
 		    <div className = "parent-container">
 			<div>
@@ -334,7 +348,7 @@ class Level extends Component {
 				    </Table>
 				</DialogContent>
 				<DialogActions>
-				    <Button onClick={this.closeAllTestsDialog} color="primary"
+				    <Button onClick={this.handleNextLevel} color="primary"
 					disabled = {this.state.numberTestsPassing > 0? false : true}>
 				    Next Level
 				    </Button>

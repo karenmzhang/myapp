@@ -10,10 +10,10 @@ router.post('/', (req, res) => {
     const { spawn } = require('child_process');
     const fs = require('fs');
 
-    var fileName = __dirname + "/Code.java";
-    var compiledFileName = __dirname + "/Code";
-    var testFileName = __dirname + "/Test.java";
-    var compiledTestName = __dirname + "/Test";
+    var fileName = __dirname + "/Tests" + "/Code.java";
+    var compiledFileName = __dirname + "/Tests" + "/Code";
+    var testFileName = __dirname + "/Tests" + "/Test.java";
+    var compiledTestName = __dirname + "/Tests" + "/Test";
     var opts = {stdio: 'inherit'};
     //    console.log(fileName);
     fs.writeFileSync(fileName, req.body.code);
@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
 	    for (var i = 0; i < testData.numberOfTests[levelNumber]; i++) {
 		(function(i) {
 		    let name = testName + levelNumber + "_" + i;
-		    testA = spawn('java', ["-cp", __dirname, name]);
+		    testA = spawn('java', ["-cp", __dirname + "/Tests", name]);
 		    
 		    testA.on('exit', (code, signal) => {
 			console.log('test child process exited with'  +`code ${code} and signal ${signal}`);
