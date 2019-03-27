@@ -56,7 +56,7 @@ class Login extends Component {
 
 	if (this.state.user) {
 	    return <Redirect to={{
-		pathname:'/level',
+		pathname:'/validate',
 		state: {user: this.state.user}
 	    }} />;
 	}
