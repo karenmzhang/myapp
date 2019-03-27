@@ -12,7 +12,7 @@ class Routes extends Component {
 	    <Switch>
 	    <Route exact path ="/" component = {Login} />
 	    <Route exact path = "/validate" component = {Validate} />
-	    <Route exact path = "/level" component = {Level} />
+	    <Route exact path = "/level" component = {Validate} />
 	    <Route component ={Nomatch}/>
 	    </Switch>
 	    </div>

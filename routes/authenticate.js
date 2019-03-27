@@ -7,7 +7,7 @@ var casURL = 'https://fed.princeton.edu/cas/';
 
 // what should this be? if it's just redirecting back to the homepage, or is it 
 // redirecting to something that should be the server? in that case, process.env.port or localhost 5000?
-var myservice = process.env.DATABASE_URL ? "http://debuggr.herokuapp.com" : "http://localhost:3000";
+var myservice = process.env.DATABASE_URL ? "https://debuggr.herokuapp.com" : "http://localhost:3000";
 var myproxy = "http://localhost:5000";
 
 var cas = new CentralAuthenticationService({
@@ -69,7 +69,7 @@ router.post('/verify', (req, res) => {
 })
 
 router.get('/logout', (req, res) => {
-    res.redirect(casURL + 'logout?url=http://princetoncourses.com/');
+    res.redirect(casURL + 'logout?url=https://debugger.herokuapp.com');
 })
 
 module.exports.router = router;
