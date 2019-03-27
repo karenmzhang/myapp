@@ -1,4 +1,7 @@
 public class Code {
+    public static String printQuestionMarks(int N) {
+	return "?";
+    }
   public static int arraySum(int[] arr) {
     //write your code here
     int sum = 0;
