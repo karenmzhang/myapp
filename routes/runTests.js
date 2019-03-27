@@ -20,103 +20,81 @@ router.post('/', (req, res) => {
 
     var javac = spawn('javac', [fileName] );
     var responseText = "Failed to compile.\nstderr: ";
-
+    var failedCompilation = false;
     javac.stderr.on('data', (data) => {
-        if (!data.includes("Picked up JAVA_TOOL_OPTIONS"))
+	if (!data.includes("Picked up JAVA_TOOL_OPTIONS")) {
             responseText += data;
+	    failedCompilation = true;
+	}
         console.log(`COMPILATION stderr: ${data}`);
     });
 
-    var testName = "Test";
-    const levelNumber = req.body.level;
+    if (!failedCompilation) {
+	var testName = "Test";
+	const separator = '\x07';
+	const levelNumber = req.body.level;
+	javac.on('close', (code) => {
+	    if (code === 0) {
+		responseText = "";
+		var testA;
+		childList = [];
+		for (var i = 0; i < testData.numberOfTests[levelNumber]; i++) {
+		    (function(i) {
+			let name = testName + levelNumber + "_" + i;
+			testA = spawn('java', ["-cp", __dirname + "/Tests", name]);
 
-    javac.on('close', (code) => {
-	if (code === 0) {
-	    responseText = "";
-	    var testA;
-	    childList = [];
-	    for (var i = 0; i < testData.numberOfTests[levelNumber]; i++) {
-		(function(i) {
-		    let name = testName + levelNumber + "_" + i;
-		    testA = spawn('java', ["-cp", __dirname + "/Tests", name]);
-		    
-		    testA.on('exit', (code, signal) => {
-			console.log('test child process exited with'  +`code ${code} and signal ${signal}`);
-		    });
+			testA.on('exit', (code, signal) => {
+			    console.log('test child process exited with'  +`code ${code} and signal ${signal}`);
+			});
 
-		    testA.stdout.on('data', (data) => {
-			responseText += data;
-		    });
-
-		    testA.stderr.on('data', (data) => {
-			if (!data.includes("Picked up JAVA_TOOL_OPTIONS"))
+			testA.stdout.on('data', (data) => {
 			    responseText += data;
-			console.log(`EXECUTION stderr: ${data}`);
-		    });
+			});
 
-		    testA.on('close', () => {
-			console.log(name);
-			console.log(responseText);
-			childList.push(name);
+			var runtimeError = false;
+			var errorMsg = "";
+			testA.stderr.on('data', (data) => {
+			    runtimeError = true;
+			    if (!data.includes("Picked up JAVA_TOOL_OPTIONS"))
+				errorMsg += data 
+			    console.log(`EXECUTION stderr: ${data}`);
+			});
 
-			if(childList.length == testData.numberOfTests[levelNumber]) 
-			    res.send(responseText);
-		    });
+			testA.on('close', () => {
+			    
+			    if (runtimeError) {
+				responseText += testData.testCases[levelNumber][i] 
+				responseText += errorMsg ;
+				responseText += ";fail" + separator;
+			    }
+			    console.log(name);
+			    console.log(responseText);
+			    childList.push(name);
 
-		})(i)
+			    if(childList.length == testData.numberOfTests[levelNumber]) 
+				res.send({
+				    failedToCompile: false,
+				    output: responseText
+				});
+			});
+
+		    })(i)
+		}
+
+	    } else {
+		res.send({
+		    failedToCompile: true,
+		    output: responseText
+		});
+		console.log('code was not 0');
 	    }
-
-/*	    var testA = spawn('java', ["-cp", __dirname, 'Test']);
-
-	    testA.on('exit', function(code, signal) {
-		console.log('test child process exited with'  +`code ${code} and signal ${signal}`);
-	    });
-
-	    testA.stdout.on('data', (data) => {
-		responseText += data;
-		console.log(`stdout: ${data}`);
-	    });
-
-	    testA.stderr.on('data', (data) => {
-		if (!data.includes("Picked up JAVA_TOOL_OPTIONS"))
-		    responseText += data;
-		console.log(`EXECUTION stderr: ${data}`);
-	    });
-
-	    testA.on('close', () => {
-		//responseText += 'Submitted at: ' + req.requestTime + '\n';
-		res.send(responseText);
-	    });
-*/
-	    /*var testC = spawn('javac', [testFileName]);
-
-	    testC.on('close', (code) => {
-		var testA = spawn('java', ["-cp", __dirname, 'Test']);
-
-		testA.on('exit', function(code, signal) {
-		    console.log('test child process exited with'  +`code ${code} and signal ${signal}`);
-		});
-
-		testA.stdout.on('data', (data) => {
-		    responseText += data;
-		    console.log(`stdout: ${data}`);
-		});
-
-		testA.stderr.on('data', (data) => {
-		    if (!data.includes("Picked up JAVA_TOOL_OPTIONS"))
-			responseText += data;
-		    console.log(`EXECUTION stderr: ${data}`);
-		});
-
-		testA.on('close', () => {
-		    //responseText += 'Submitted at: ' + req.requestTime + '\n';
-		    res.send(responseText);
-		});
-	    });*/
-	} else {
-	    res.send(responseText);
-	    console.log('code was not 0');
-	}
-    });
+	});
+    }
+    else {
+	res.send({
+	    failedToCompile: true,
+	    output: responseText
+	});
+    }
 });
 module.exports = router;

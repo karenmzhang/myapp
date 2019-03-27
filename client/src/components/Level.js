@@ -41,6 +41,8 @@ class Level extends Component {
             customInput: '',
 	    customInputDialog: false,
 	    allTestsDialog: false,
+	    failedToCompileTests: false,
+	    failedToCompileTestsDialog: false, 
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -55,6 +57,11 @@ class Level extends Component {
 	this.closeAllTestsDialog = this.closeAllTestsDialog.bind(this);
 	this.countTestsPassing = this.countTestsPassing.bind(this);
 	this.setTestResults = this.setTestResults.bind(this);
+	this.closeFailedToCompileDialog = this.closeFailedToCompileDialog.bind(this);
+    }
+
+    closeFailedToCompileDialog() {
+	this.setState({failedToCompileTestsDialog: false});
     }
 
     setTestResults(s) {
@@ -110,13 +117,19 @@ class Level extends Component {
                 code: this.state.code,
 		level: this.state.levelNumber}),
         });
-        const body = await response.text();
-
+        const body = await response.json();
+	if (body.failedToCompile) {
+	    this.setState({output: body.output, 
+		failedToCompileTests: true});
+	    this.setState({cursorActivity: []});
+	    this.setState({failedToCompileTestsDialog: true});
+	    return;
+	}
         //this.setState({output: body});
 	//console.log(body);
 	const separator = '\x07';
-	console.log(body.split(separator));
-	this.setTestResults(body);
+	console.log(body.output.split(separator));
+	this.setTestResults(body.output);
 	//this.setTestResults("6;??????;?;fail,1;?;?;pass,0;;?;fail,-1;;?;fail");
 	//this.setState({testResults: body.split(",")});
 	this.countTestsPassing();
@@ -303,6 +316,26 @@ class Level extends Component {
 				</DialogContent>
 				<DialogActions>
 				    <Button onClick={this.closeCustomInputDialog} color="primary">
+				    Close
+				    </Button>
+				</DialogActions>
+			    </Dialog>
+			</div>
+			<div>
+			    <Dialog
+				open={this.state.failedToCompileTestsDialog}
+				onClose={this.closeFailedToCompileDialog}
+				disableBackdropClick = {true}
+				fullWidth = {true}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			    >
+				<DialogTitle id="alert-dialog-title">{"Test Results:"}</DialogTitle>
+				<DialogContent>
+				    <pre className = "word-wrap-needed">{this.state.output}</pre>
+				</DialogContent>
+				<DialogActions>
+				    <Button onClick={this.closeFailedToCompileDialog} color="primary">
 				    Close
 				    </Button>
 				</DialogActions>
