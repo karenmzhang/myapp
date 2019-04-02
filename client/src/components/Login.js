@@ -40,8 +40,8 @@ class Login extends Component {
 
     handleLogin = async e => {
         e.preventDefault();
-        //window.location = "https://fed.princeton.edu/cas/login?service=http://localhost:3000";
-	window.location = "https://fed.princeton.edu/cas/login?service=https://debuggr.herokuapp.com";
+        window.location = "https://fed.princeton.edu/cas/login?service=http://localhost:3000";
+	//window.location = "https://fed.princeton.edu/cas/login?service=https://debuggr.herokuapp.com";
     }
 
     render() {
@@ -55,10 +55,11 @@ class Login extends Component {
         });
 
 	if (this.state.user) {
-	    return <Redirect to={{
+	    return <Redirect to = "/testpy"/>;
+	    /*return <Redirect to={{
 		pathname:'/validate',
 		state: {user: this.state.user}
-	    }} />;
+	    }} />;*/
 	}
 
 	else {

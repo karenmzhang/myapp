@@ -13,10 +13,11 @@ class Validate extends Component {
             return <Redirect to="/"/>;
         }
 	else {
-	    return <Redirect to={{
+	    return <Redirect to = "/testpy"/>
+	    /*return <Redirect to={{
                 pathname:'/level',
                 state: {user: this.props.location.state.user}
-            }} />;
+            }} />;*/
 	}
     }
 }
