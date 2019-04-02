@@ -36,7 +36,6 @@ class Testpy extends Component {
     }
 
     handleCustomSubmit = async e => {
-        this.showLoadingMessage();
         e.preventDefault();
         const response = await fetch('/api/py', {
             method: 'POST',
@@ -98,7 +97,7 @@ class Testpy extends Component {
 			</div>
 			<div className = "output-box">
 			    <div className = "instructions-box">
-			    {this.state.instructions}
+			    {this.state.output}
 			    </div>
 			    <div className = "button-container">
 				<div className = "input-container">

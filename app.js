@@ -11,7 +11,7 @@ var userRouter = require('./routes/user');
 var submitRouter = require('./routes/submit');
 var authRouter = require('./routes/authenticate');
 var testRouter = require('./routes/runTests');
-//var pyRouter = require('./routes/py');
+var pyRouter = require('./routes/py');
 
 var app = express();
 
@@ -51,7 +51,7 @@ app.use('/api/user', userRouter);
 app.use('/api/snapshot', snapshotRouter);
 app.use('/api/auth', authRouter.router);
 app.use('/api/runTests', testRouter);
-//app.use('/api/py', pyRouter);
+app.use('/api/py', pyRouter);
 app.get('*', (req, res) => {
     let url = path.join(__dirname, 'client/build', 'index.html');
     if (!url.startsWith('/app/')) // we're on local windows
@@ -65,23 +65,6 @@ app.get('*', (req, res) => {
 });
 
 
-const poolSize = 5
-let mySandbox = new Sandbox({poolSize})
-
-mySandbox.initialize(err => {
-  if (err) throw new Error(`unable to initialize the sandbox: ${err}`)
-
-  const code = 'print "Hello, world!"'
-  const timeoutMs = 5 * 1000
-
-  mySandbox.run({code, timeoutMs}, (err, result) => {
-    if (err) throw new Error(`unable to run the code in the sandbox: ${err}`)
-
-    console.log(result.stdout); // Hello, world!
-      console.log(result.stderr);
-      console.log("THIS IS FROM DOCKER!!!!!!!!!!!!!!!!!!!!!")
-  })
-});
 // catch 404 and forward to error handler
 /*app.use(function(req, res, next) {
   next(createError(404));
