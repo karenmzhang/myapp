@@ -200,8 +200,8 @@ class Level extends Component {
     handleCustomSubmit = async e => {
         this.showLoadingMessage();
         e.preventDefault();
-        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
-	const response = await fetch('http://localhost:8080/runjava', {
+        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+	//const response = await fetch('http://localhost:8080/runjava', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
