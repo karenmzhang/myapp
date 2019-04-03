@@ -55,11 +55,10 @@ class Login extends Component {
         });
 
 	if (this.state.user) {
-	    return <Redirect to = "/testpy"/>;
-	    /*return <Redirect to={{
+	    return <Redirect to={{
 		pathname:'/validate',
 		state: {user: this.state.user}
-	    }} />;*/
+	    }} />;
 	}
 
 	else {

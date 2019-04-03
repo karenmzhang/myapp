@@ -1,17 +1,10 @@
 public class Code {
-    public static String printQuestionMarks(int N) {
-	return "?";
-    }
-  public static int arraySum(int[] arr) {
-    //write your code here
-    int sum = 0;
-    for (int i = 0; i < arr.length; i++) {
-      sum += arr[i];
-    }
-    return sum;
+  public static String printQuestionMarks(int n) {
+   //write your code here
+   return "?";
   }
 
   public static void main(String[] args) {
-
+    
   }
 }

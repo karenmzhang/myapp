@@ -45,7 +45,6 @@ class Level extends Component {
 	    failedToCompileTestsDialog: false, 
         };
 
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleNewUser = this.handleNewUser.bind(this);
         this.showLoadingMessage = this.showLoadingMessage.bind(this);
         this.handleCustomInput = this.handleCustomInput.bind(this);
@@ -178,7 +177,8 @@ class Level extends Component {
     handleCustomSubmit = async e => {
         this.showLoadingMessage();
         e.preventDefault();
-        const response = await fetch('/api/submit', {
+        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+	const response = await fetch('http://localhost:8080/runjava', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -209,72 +209,11 @@ class Level extends Component {
         this.setState({cursorActivity: []});
     };
 
-    handleSubmit = async e => {
-        this.showLoadingMessage();
-        e.preventDefault();
-        const response = await fetch('/api/submit', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({code: this.state.code}),
-        });
-        const body = await response.text();
-
-        this.setState({output: body});
-
-        const response2 = await fetch('/api/snapshot', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                codeState: this.state.code,
-                buttonPressed: 0,
-                level: 0,
-                testResults: this.state.testResults,
-                output: this.state.output,
-                cursorActivity: this.state.cursorActivity,
-            }),
-        });
-        const body2 = await response2.text();
-        console.log(body2);
-        this.setState({cursorActivity: []});
-    };
 
     showLoadingMessage() {
         this.setState({output: "Compiling and running your code..."});
     }
 
-    /*componentDidMount() {
-	//console.log(this.props.location.search);
-	var tick = this.props.location.search;
-	if (!tick) {
-	    this.setState({user: ''});
-	    return;
-	}
-	//const casurl = 'https://fed.princeton.edu/cas/';
-	//const query = "validate?service=";
-	//const service = 'http://localhost:3000';
-	//const ticketquery = "&ticket=";
-	tick = tick.substring(8,tick.length);
-	//console.log(tick);
-	// send this to the express app to do instead.
-	/*const response = fetch('/api/auth/verify', {
-		method: 'POST',
-            headers: {'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ticket: tick}),}
-	)
-	    .then(console.log(response));
-	    
-    }*/
-/*
-    componentDidMount() {
-	// need to use props instead of set state for this.
-	const newuser = this.props.location.state.user;
-	this.setState({user: newuser});
-	console.log(this.state.user);
-    }
-*/
     render() {
         const theme = createMuiTheme({
             palette: {
@@ -290,7 +229,7 @@ class Level extends Component {
             theme: 'darcula'
         };
 
-	if (!this.props.location.state.user) {
+	if (!this.props.location || !this.props.location.state.user) {
 	    return <Redirect to="/"/>;
 	}
 	else {
