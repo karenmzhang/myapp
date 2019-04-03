@@ -30,9 +30,10 @@ class Level extends Component {
 	this.state = {
 	    levelNumber: 0,
 	    instructions: levelData.description[0],
-            code: levelData.starterCode[0],
-	    initialCode:levelData.starterCode[0],
-	    methondName: levelData.methodName[0],
+            code: levelData.codeHead[0] + levelData.starterCode[0],
+	    initialCode:levelData.codeHead[0] + levelData.starterCode[0],
+	    methodName: levelData.methodName[0],
+	    className: levelData.className[0],
             output: '',
             user: '',
             testResults: [";;;fail"],
@@ -58,6 +59,26 @@ class Level extends Component {
 	this.setTestResults = this.setTestResults.bind(this);
 	this.closeFailedToCompileDialog = this.closeFailedToCompileDialog.bind(this);
     }
+
+    static getDerivedStateFromProps(props, state) {
+	if (!props.location || !props.location.state || !props.location.state.user) {
+	    console.log(props)
+	    console.log(state.user)
+	    console.log("get derived state called, no props")
+	    return null;
+	}
+	if (props.location.state.user !== state.user) {
+	    console.log(props.location.state.user)
+	    return {
+		user: props.location.state.user,
+		code: levelData.codeHead[0] + props.location.state.user +  levelData.starterCode[0],
+		initialCode:levelData.codeHead[0] + props.location.state.user +  levelData.starterCode[0],
+		
+	    };
+	}
+	return null;
+    }
+
 
     closeFailedToCompileDialog() {
 	this.setState({failedToCompileTestsDialog: false});
@@ -151,11 +172,13 @@ class Level extends Component {
 
     handleNextLevel = event => {
 	let currentLevelNumber = this.state.levelNumber;
+	let currentUser = this.state.user;
 	this.setState({	levelNumber: currentLevelNumber+1,
 			instructions: levelData.description[currentLevelNumber+1],
-			code: levelData.starterCode[currentLevelNumber+1],
-			initialCode:levelData.starterCode[currentLevelNumber+1],
-			methondName: levelData.methodName[currentLevelNumber+1],
+			code: levelData.codeHead[currentLevelNumber+1] + currentUser + levelData.starterCode[currentLevelNumber+1],
+			initialCode:levelData.codeHead[currentLevelNumber+1] + currentUser + levelData.starterCode[currentLevelNumber+1],
+			methodName: levelData.methodName[currentLevelNumber+1],
+			className: levelData.className[currentLevelNumber+1],
 			testResults: [";;;fail"],
 			numberTestsPassing: 0,
 			cursorActivity: [],
@@ -177,14 +200,19 @@ class Level extends Component {
     handleCustomSubmit = async e => {
         this.showLoadingMessage();
         e.preventDefault();
-        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
-	//const response = await fetch('http://localhost:8080/runjava', {
+        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+	const response = await fetch('http://localhost:8080/runjava', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 code: this.state.code,
-                args: this.state.customInput}),
+                args: this.state.customInput,
+		user: this.state.user,
+		className: this.state.className,
+		methodName: this.state.methodName,
+	    }),
+
         });
         const body = await response.text();
 
@@ -229,7 +257,7 @@ class Level extends Component {
             theme: 'darcula'
         };
 
-	if (!this.props.location || !this.props.location.state.user) {
+	if (!this.props.location || !this.props.location.state || !this.props.location.state.user) {
 	    return <Redirect to="/"/>;
 	}
 	else {
