@@ -37,7 +37,8 @@ class Testpy extends Component {
 
     handleCustomSubmit = async e => {
         e.preventDefault();
-        const response = await fetch('/api/py', {
+        //const response = await fetch('http://localhost:8080/runjava', {
+	const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },

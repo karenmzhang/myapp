@@ -1,8 +1,7 @@
 //var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-
-let Sandbox = require('docker-python-sandbox');
+//var proxy = require('http-proxy-middleware');
 //var cookieParser = require('cookie-parser');
 //var logger = require('morgan');
 
@@ -52,6 +51,7 @@ app.use('/api/snapshot', snapshotRouter);
 app.use('/api/auth', authRouter.router);
 app.use('/api/runTests', testRouter);
 app.use('/api/py', pyRouter);
+
 app.get('*', (req, res) => {
     let url = path.join(__dirname, 'client/build', 'index.html');
     if (!url.startsWith('/app/')) // we're on local windows
