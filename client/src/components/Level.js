@@ -215,6 +215,7 @@ class Level extends Component {
 
         });
         const body = await response.text();
+	console.log(body);
 
         this.setState({output: body});
 	this.setState({customInputDialog: true});
