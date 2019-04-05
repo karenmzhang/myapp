@@ -34,6 +34,7 @@ class Level extends Component {
 	    initialCode:levelData.codeHead[0] + levelData.starterCode[0],
 	    methodName: levelData.methodName[0],
 	    className: levelData.className[0],
+	    numberOfTests: levelData.numberOfTests[0],
             output: '',
             user: '',
             testResults: [";;;fail"],
@@ -129,17 +130,25 @@ class Level extends Component {
 
     handleRunAllTests = async e => {
         e.preventDefault();
-        const response = await fetch('/api/runTests', {
+
+        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+	//const response = await fetch('http://localhost:8080/runtests', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                code: this.state.code,
-		level: this.state.levelNumber}),
+		user: this.state.user,
+		className: this.state.className,
+		methodName: this.state.methodName,
+		levelNumber: this.state.levelNumber,
+		numberOfTests: this.state.numberOfTests,
+		code: this.state.code
+	    }),
         });
-        const body = await response.json();
-	if (body.failedToCompile) {
-	    this.setState({output: body.output, 
+
+	const body = await response.json();
+	if (body.FailedToCompile) {
+	    this.setState({output: body.Output, 
 		failedToCompileTests: true});
 	    this.setState({cursorActivity: []});
 	    this.setState({failedToCompileTestsDialog: true});
@@ -148,8 +157,8 @@ class Level extends Component {
         //this.setState({output: body});
 	//console.log(body);
 	const separator = '\x07';
-	console.log(body.output.split(separator));
-	this.setTestResults(body.output);
+	console.log(body.Output.split(separator));
+	this.setTestResults(body.Output);
 	//this.setTestResults("6;??????;?;fail,1;?;?;pass,0;;?;fail,-1;;?;fail");
 	//this.setState({testResults: body.split(",")});
 	this.countTestsPassing();
@@ -171,6 +180,19 @@ class Level extends Component {
     }
 
     handleNextLevel = event => {
+        const response = fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+	//const response = fetch('http://localhost:8080/nextlevel', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+		user: this.state.user,
+		className: this.state.className,
+		methodName: this.state.methodName,
+		levelNumber: this.state.levelNumber,
+		numberOfTests: this.state.numberOfTests,
+	    }),
+        });
 	let currentLevelNumber = this.state.levelNumber;
 	let currentUser = this.state.user;
 	this.setState({	levelNumber: currentLevelNumber+1,
@@ -179,6 +201,7 @@ class Level extends Component {
 			initialCode:levelData.codeHead[currentLevelNumber+1] + currentUser + levelData.starterCode[currentLevelNumber+1],
 			methodName: levelData.methodName[currentLevelNumber+1],
 			className: levelData.className[currentLevelNumber+1],
+			numberOfTests: levelData.numberOfTests[0],
 			testResults: [";;;fail"],
 			numberTestsPassing: 0,
 			cursorActivity: [],
@@ -394,7 +417,7 @@ class Level extends Component {
 				<Button variant = "contained" color = "secondary" onClick = {this.handleRunAllTests}>
 				Run all tests
 				</Button>
-				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
+				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>=0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
 				Next level
 				</Button>
 				<Button variant = "contained" onClick = {this.handleReset} style ={{backgroundColor: "#d32f2f"}}>

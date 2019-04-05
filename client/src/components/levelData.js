@@ -4,5 +4,6 @@ export const levelData = {
     "className" : ["Question", "Sum"],
     "starterCode":[" {\n  public static String printQuestionMarks(int n) {\n   //write your code here\n   return \"?\";\n  }\n\n  public static void main(String[] args) {\n    \n  }\n}", 
 	" {\n  public static int arraySum(int[] arr) {\n    //write your code here\n    int sum = 0;\n    for (int i = 0; i < arr.length; i++) {\n      sum += arr[i];\n    return sum;\n  }\n\n  public static void main(String[] args) {\n\n  }\n}"],
-    "methodName": ["printQuestionMarks","arraySum"]
+    "methodName": ["printQuestionMarks","arraySum"],
+    "numberOfTests": ["4","7"]
 };
