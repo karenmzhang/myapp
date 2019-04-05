@@ -131,7 +131,7 @@ class Level extends Component {
     handleRunAllTests = async e => {
         e.preventDefault();
 
-        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runtests', {
 	//const response = await fetch('http://localhost:8080/runtests', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ class Level extends Component {
     }
 
     handleNextLevel = event => {
-        const response = fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+        const response = fetch('https://lit-mesa-21652.herokuapp.com/nextlevel', {
 	//const response = fetch('http://localhost:8080/nextlevel', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
