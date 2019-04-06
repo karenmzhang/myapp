@@ -131,8 +131,8 @@ class Level extends Component {
     handleRunAllTests = async e => {
         e.preventDefault();
 
-        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runtests', {
-	//const response = await fetch('http://localhost:8080/runtests', {
+        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runtests', {
+	const response = await fetch('http://localhost:8080/runtests', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -180,8 +180,8 @@ class Level extends Component {
     }
 
     handleNextLevel = event => {
-        const response = fetch('https://lit-mesa-21652.herokuapp.com/nextlevel', {
-	//const response = fetch('http://localhost:8080/nextlevel', {
+        //const response = fetch('https://lit-mesa-21652.herokuapp.com/nextlevel', {
+	const response = fetch('http://localhost:8080/nextlevel', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -201,7 +201,7 @@ class Level extends Component {
 			initialCode:levelData.codeHead[currentLevelNumber+1] + currentUser + levelData.starterCode[currentLevelNumber+1],
 			methodName: levelData.methodName[currentLevelNumber+1],
 			className: levelData.className[currentLevelNumber+1],
-			numberOfTests: levelData.numberOfTests[0],
+			numberOfTests: levelData.numberOfTests[currentLevelNumber+1],
 			testResults: [";;;fail"],
 			numberTestsPassing: 0,
 			cursorActivity: [],
@@ -223,8 +223,8 @@ class Level extends Component {
     handleCustomSubmit = async e => {
         this.showLoadingMessage();
         e.preventDefault();
-        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
-	//const response = await fetch('http://localhost:8080/runjava', {
+        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+	const response = await fetch('http://localhost:8080/runjava', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -417,7 +417,7 @@ class Level extends Component {
 				<Button variant = "contained" color = "secondary" onClick = {this.handleRunAllTests}>
 				Run all tests
 				</Button>
-				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>=0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
+				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
 				Next level
 				</Button>
 				<Button variant = "contained" onClick = {this.handleReset} style ={{backgroundColor: "#d32f2f"}}>
