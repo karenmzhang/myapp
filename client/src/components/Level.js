@@ -14,6 +14,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -43,12 +44,13 @@ class Level extends Component {
             customInput: '',
 	    customInputDialog: false,
 	    allTestsDialog: false,
-	    failedToCompileTests: false,
 	    failedToCompileTestsDialog: false, 
+	    showCircleLoaderCustomInput: false,
+	    showCircleLoaderRunTests: false,
         };
 
         this.handleNewUser = this.handleNewUser.bind(this);
-        this.showLoadingMessage = this.showLoadingMessage.bind(this);
+	this.handleLogout = this.handleLogout.bind(this);
         this.handleCustomInput = this.handleCustomInput.bind(this);
         this.handleCustomSubmit = this.handleCustomSubmit.bind(this);
 	this.handleRunAllTests = this.handleRunAllTests.bind(this);
@@ -80,6 +82,9 @@ class Level extends Component {
 	return null;
     }
 
+    handleLogout() {
+	window.location = "https://fed.princeton.edu/cas/logout?url=http://localhost:3000";
+    }
 
     closeFailedToCompileDialog() {
 	this.setState({failedToCompileTestsDialog: false});
@@ -131,6 +136,9 @@ class Level extends Component {
     handleRunAllTests = async e => {
         e.preventDefault();
 
+	this.setState({allTestsDialog: true,
+	    showCircleLoaderRunTests: true,
+	});
         //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runtests', {
 	const response = await fetch('http://localhost:8080/runtests', {
             method: 'POST',
@@ -148,12 +156,15 @@ class Level extends Component {
 
 	const body = await response.json();
 	if (body.FailedToCompile) {
-	    this.setState({output: body.Output, 
-		failedToCompileTests: true});
+	    this.setState({
+		failedToCompileTestsDialog: true,
+		output: body.Output, 
+		showCircleLoaderRunTests: false,
+	    });
 	    this.setState({cursorActivity: []});
-	    this.setState({failedToCompileTestsDialog: true});
 	    return;
 	}
+
         //this.setState({output: body});
 	//console.log(body);
 	const separator = '\x07';
@@ -162,6 +173,12 @@ class Level extends Component {
 	//this.setTestResults("6;??????;?;fail,1;?;?;pass,0;;?;fail,-1;;?;fail");
 	//this.setState({testResults: body.split(",")});
 	this.countTestsPassing();
+
+        this.setState({cursorActivity: []});
+	this.setState({
+		failedToCompileTestsDialog: false,
+		showCircleLoaderRunTests: false,
+	});
         /*const response2 = await fetch('/api/snapshot', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
@@ -175,8 +192,6 @@ class Level extends Component {
                 cursorActivity: this.state.cursorActivity,
             }),
         });*/
-        this.setState({cursorActivity: []});
-	this.setState({allTestsDialog: true});
     }
 
     handleNextLevel = event => {
@@ -221,8 +236,9 @@ class Level extends Component {
     }
 
     handleCustomSubmit = async e => {
-        this.showLoadingMessage();
         e.preventDefault();
+	this.setState({customInputDialog: true,
+			showCircleLoaderCustomInput: true});
         //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
 	const response = await fetch('http://localhost:8080/runjava', {
             method: 'POST',
@@ -240,8 +256,8 @@ class Level extends Component {
         const body = await response.text();
 	console.log(body);
 
-        this.setState({output: body});
-	this.setState({customInputDialog: true});
+        this.setState({output: body,
+	    showCircleLoaderCustomInput: false});
 
         const response2 = await fetch('/api/snapshot', {
             method: 'POST',
@@ -260,11 +276,6 @@ class Level extends Component {
         console.log(body2);
         this.setState({cursorActivity: []});
     };
-
-
-    showLoadingMessage() {
-        this.setState({output: "Compiling and running your code..."});
-    }
 
     render() {
         const theme = createMuiTheme({
@@ -289,7 +300,14 @@ class Level extends Component {
             <MuiThemeProvider theme={theme}>
                 <div className = "level-box">
 		    <div className = "level-header">
+			<div className = "level-number-box">
 			{"Level " + this.state.levelNumber}
+			</div>
+			<div className = "logout-box">
+		        <Button variant = "contained" onClick = {this.handleLogout} color = "secondary">
+		        log out	
+			</Button>
+			</div>
 		    </div>
 		    <div className = "parent-container">
 			<div>
@@ -303,30 +321,16 @@ class Level extends Component {
 			    >
 				<DialogTitle id="alert-dialog-title">{"Custom Input Results:"}</DialogTitle>
 				<DialogContent>
-				    <pre className = "word-wrap-needed">{this.state.output}</pre>
+				    {this.state.showCircleLoaderCustomInput ? 
+					<div className = "circle-loader">
+					<CircularProgress /> 
+					</div>
+					:	
+					<pre className = "word-wrap-needed">{this.state.output}</pre>
+				    }
 				</DialogContent>
 				<DialogActions>
 				    <Button onClick={this.closeCustomInputDialog} color="primary">
-				    Close
-				    </Button>
-				</DialogActions>
-			    </Dialog>
-			</div>
-			<div>
-			    <Dialog
-				open={this.state.failedToCompileTestsDialog}
-				onClose={this.closeFailedToCompileDialog}
-				disableBackdropClick = {true}
-				fullWidth = {true}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description"
-			    >
-				<DialogTitle id="alert-dialog-title">{"Test Results:"}</DialogTitle>
-				<DialogContent>
-				    <pre className = "word-wrap-needed">{this.state.output}</pre>
-				</DialogContent>
-				<DialogActions>
-				    <Button onClick={this.closeFailedToCompileDialog} color="primary">
 				    Close
 				    </Button>
 				</DialogActions>
@@ -345,7 +349,20 @@ class Level extends Component {
 				<DialogTitle id="alert-dialog-title">{"Test Results:"}</DialogTitle>
 				</Paper>
 				<DialogContent>
-				    <Table>
+				    {this.state.showCircleLoaderRunTests ? 
+					<div className = "test-result-pad">
+					<div className = "circle-loader">
+					<CircularProgress /> 
+					</div>
+					</div>
+					:
+					(this.state.failedToCompileTestsDialog ?
+					<div className = "test-result-pad-no-center">    
+					<pre className = "word-wrap-needed">{this.state.output}</pre>
+					</div>
+					:
+					<div>
+					 <Table>
 					<TableHead>
 					    <TableRow>
 						<TableCell>Input</TableCell>
@@ -369,7 +386,10 @@ class Level extends Component {
 						</TableCell>
 					    </TableRow>
 					</TableBody>
-				    </Table>
+					</Table>
+					</div>
+				    )
+				    }
 				</DialogContent>
 				<DialogActions>
 				    <Button onClick={this.handleNextLevel} color="primary"
@@ -417,7 +437,7 @@ class Level extends Component {
 				<Button variant = "contained" color = "secondary" onClick = {this.handleRunAllTests}>
 				Run all tests
 				</Button>
-				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
+				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>=0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
 				Next level
 				</Button>
 				<Button variant = "contained" onClick = {this.handleReset} style ={{backgroundColor: "#d32f2f"}}>

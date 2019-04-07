@@ -50,9 +50,20 @@
 }
 
 .level-header {
-    height: 40px;
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    width: 100vw;
     font-size: 30px;
     color: white;
+}
+
+.level-number-box {
+    flex-grow: 2;
+    text-align: center;
+}
+
+.logout-box {
 }
 
 .parent-container {
@@ -97,6 +108,23 @@
 
 .button-padding {
     padding-left:10px;
+}
+
+.circle-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.test-result-pad {
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    padding-top:20px;
+}
+.test-result-pad-no-center {
+    display:flex;
+    padding-top:20px;
 }
 
 pre {
