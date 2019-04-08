@@ -5,8 +5,11 @@ module.exports = (sequelize, type) => {
 	    primaryKey: true,
 	    autoIncrement: true
 	},
-	codeState: {
+	netid: {
 	    type: type.STRING,
+	},
+	codeState: {
+	    type: type.STRING(2000),
 	},
 	buttonPressed: {
 	    type: type.INTEGER,
@@ -14,8 +17,12 @@ module.exports = (sequelize, type) => {
 	level: {
 	    type: type.INTEGER,
 	},
+	customInputs: {
+	    type: type.STRING,
+	},
 	testResults: {
 	    type: type.ARRAY(type.BOOLEAN),
+	    defaultValue: [false],
 	},
 	cursorActivity: {
 	    type: type.ARRAY(type.INTEGER)

@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require('path');
 
-//var snapshotRouter = require('./routes/snapshot');
+var snapshotRouter = require('./routes/snapshot');
 var userRouter = require('./routes/user');
 var authRouter = require('./routes/authenticate');
 
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '/client/build')));
 
 app.use('/api/user', userRouter);
-//app.use('/api/snapshot', snapshotRouter);
+app.use('/api/snapshot', snapshotRouter);
 app.use('/api/auth', authRouter.router);
 
 app.get('*', (req, res) => {

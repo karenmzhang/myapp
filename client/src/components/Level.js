@@ -47,8 +47,9 @@ class Level extends Component {
 	    failedToCompileTestsDialog: false, 
 	    showCircleLoaderCustomInput: false,
 	    showCircleLoaderRunTests: false,
+	    fetched: false,
         };
-
+	
         this.handleNewUser = this.handleNewUser.bind(this);
 	this.handleLogout = this.handleLogout.bind(this);
         this.handleCustomInput = this.handleCustomInput.bind(this);
@@ -61,6 +62,37 @@ class Level extends Component {
 	this.countTestsPassing = this.countTestsPassing.bind(this);
 	this.setTestResults = this.setTestResults.bind(this);
 	this.closeFailedToCompileDialog = this.closeFailedToCompileDialog.bind(this);
+	this.sendSnapshot = this.sendSnapshot.bind(this);
+	this.setupBeforeUnloadListener = this.setupBeforeUnloadListener.bind(this);
+    }
+
+    async componentDidMount() {
+	this.setupBeforeUnloadListener();
+	if (!this.props.location || !this.props.location.state || !this.props.location.state.user) {
+            return
+        }
+        const response = await fetch('/api/user',
+        {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                netid: this.props.location.state.user
+            }),
+        });
+        const body = await response.text();
+        console.log("got level number from database " + body);
+        this.setState({ levelNumber: parseInt(body),
+		fetched: true,
+		user: this.props.location.state.user,
+		instructions: levelData.description[parseInt(body)],
+		code: levelData.codeHead[parseInt(body)] + this.props.location.state.user + levelData.starterCode[parseInt(body)],
+		initialCode:levelData.codeHead[parseInt(body)] + this.props.location.state.user + levelData.starterCode[parseInt(body)],
+		methodName: levelData.methodName[parseInt(body)],
+		className: levelData.className[parseInt(body)],
+		numberOfTests: levelData.numberOfTests[parseInt(body)],
+	
+	});
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -73,25 +105,53 @@ class Level extends Component {
 	if (props.location.state.user !== state.user) {
 	    console.log(props.location.state.user)
 	    return {
-		levelNumber: props.location.state.levelNumber,
-		user: props.location.state.user,
 
+		user: props.location.state.user,
 		
-		instructions: levelData.description[props.location.state.levelNumber],
-		code: levelData.codeHead[props.location.state.levelNumber] + props.location.state.user + levelData.starterCode[props.location.state.levelNumber],
-		initialCode:levelData.codeHead[props.location.state.levelNumber] + props.location.state.user + levelData.starterCode[props.location.state.levelNumber],
-		methodName: levelData.methodName[props.location.state.levelNumber],
-		className: levelData.className[props.location.state.levelNumber],
-		numberOfTests: levelData.numberOfTests[props.location.state.levelNumber],
-		
+		instructions: levelData.description[state.levelNumber],
+		code: levelData.codeHead[state.levelNumber] + props.location.state.user + levelData.starterCode[state.levelNumber],
+		initialCode:levelData.codeHead[state.levelNumber] + props.location.state.user + levelData.starterCode[state.levelNumber],
+		methodName: levelData.methodName[state.levelNumber],
+		className: levelData.className[state.levelNumber],
+		numberOfTests: levelData.numberOfTests[state.levelNumber],
 	    };
 	}
 	return null;
     }
 
+    setupBeforeUnloadListener() {
+	window.addEventListener("beforeunload", (ev) => {
+	    ev.preventDefault();
+	    this.sendSnapshot(5, "", this.state.cursorActivity);
+	});
+    }
+
+    sendSnapshot(id, body, cursorAct) {
+	let testR = this.state.testResults.map(row => row[3].trim() === 'pass');
+	let code = this.state.code.substring(0,2000);
+	let customInput = this.state.customInput.substring(0,255);
+	let outputB = body.substring(0,255);
+        const response = fetch('/api/snapshot', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                codeState: code,
+		netid: this.state.user,
+                buttonPressed: id,
+                level: this.state.levelNumber,
+		customInputs: customInput,
+                testResults: testR,
+                cursorActivity: cursorAct,
+                output: outputB,
+            }),
+        });
+    }
+
     handleLogout() {
-	window.location = "https://fed.princeton.edu/cas/logout?url=http://localhost:3000";
-	//window.location = "https://fed.princeton.edu/cas/logout?url=https://debuggr.herokuapp.com";
+	this.sendSnapshot(4, "", this.state.cursorActivity);
+	//window.location = "https://fed.princeton.edu/cas/logout?url=http://localhost:3000";
+	window.location = "https://fed.princeton.edu/cas/logout?url=https://debuggr.herokuapp.com";
     }
 
     closeFailedToCompileDialog() {
@@ -144,6 +204,7 @@ class Level extends Component {
     handleRunAllTests = async e => {
         e.preventDefault();
 
+	let cursorActivity = this.state.cursorActivity;
 	this.setState({allTestsDialog: true,
 	    showCircleLoaderRunTests: true,
 	});
@@ -169,6 +230,7 @@ class Level extends Component {
 		output: body.Output, 
 		showCircleLoaderRunTests: false,
 	    });
+	    this.sendSnapshot(1, body.Output, cursorActivity);
 	    this.setState({cursorActivity: []});
 	    return;
 	}
@@ -182,6 +244,7 @@ class Level extends Component {
 	//this.setState({testResults: body.split(",")});
 	this.countTestsPassing();
 
+	this.sendSnapshot(1, "", cursorActivity);
         this.setState({cursorActivity: []});
 	this.setState({
 		failedToCompileTestsDialog: false,
@@ -203,6 +266,7 @@ class Level extends Component {
     }
 
     handleNextLevel = event => {
+	this.sendSnapshot(2, "", this.state.cursorActivity);
         const response = fetch('https://lit-mesa-21652.herokuapp.com/nextlevel', {
 	//const response = fetch('http://localhost:8080/nextlevel', {
             method: 'POST',
@@ -244,8 +308,10 @@ class Level extends Component {
     }
 
     handleReset = event => {
+	this.sendSnapshot(3, "", this.state.cursorActivity);
 	const initialCode = this.state.initialCode;
-	this.setState({code: initialCode}); 
+	this.setState({code: initialCode,
+	    cursorActivity: []}); 
     }
 
     handleCustomInput = event => {
@@ -256,6 +322,7 @@ class Level extends Component {
         e.preventDefault();
 	this.setState({customInputDialog: true,
 			showCircleLoaderCustomInput: true});
+	let cursorActivity = this.state.cursorActivity;
         const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
 	//const response = await fetch('http://localhost:8080/runjava', {
             method: 'POST',
@@ -275,22 +342,7 @@ class Level extends Component {
 
         this.setState({output: body,
 	    showCircleLoaderCustomInput: false});
-
-        /*const response2 = await fetch('/api/snapshot', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                codeState: this.state.code,
-                buttonPressed: 0,
-                level: 0,
-                testResults: this.state.testResults,
-                output: this.state.output,
-                cursorActivity: this.state.cursorActivity,
-            }),
-        });
-        const body2 = await response2.text();
-        console.log(body2);*/
+	this.sendSnapshot(0, body, cursorActivity);
         this.setState({cursorActivity: []});
     };
 
@@ -311,6 +363,15 @@ class Level extends Component {
 
 	if (!this.props.location || !this.props.location.state || !this.props.location.state.user) {
 	    return <Redirect to="/"/>;
+	}
+	if (!this.state.fetched) {
+	    return (
+		<MuiThemeProvider theme = {theme}>
+		    <div className = "level-box">
+		    <CircularProgress />
+		    </div>
+		</MuiThemeProvider>
+	    )
 	}
 	else {
 	    return(
@@ -431,7 +492,7 @@ class Level extends Component {
 			    if (editor.getCursor().line !== this.state.cursorActivity[this.state.cursorActivity.length -1]) {
 			    this.setState({
                             cursorActivity: [...this.state.cursorActivity, editor.getCursor().line]});
-
+			    console.log(this.state.cursorActivity);
 			    }
 			    }}
 			    />
