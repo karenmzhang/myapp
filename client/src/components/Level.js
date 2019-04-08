@@ -81,7 +81,7 @@ class Level extends Component {
             }),
         });
         const body = await response.text();
-        console.log("got level number from database " + body);
+        //console.log("got level number from database " + body);
         this.setState({ levelNumber: parseInt(body),
 		fetched: true,
 		user: this.props.location.state.user,
@@ -97,13 +97,13 @@ class Level extends Component {
 
     static getDerivedStateFromProps(props, state) {
 	if (!props.location || !props.location.state || !props.location.state.user) {
-	    console.log(props)
-	    console.log(state.user)
-	    console.log("get derived state called, no props")
+	    //console.log(props)
+	    //console.log(state.user)
+	    //console.log("get derived state called, no props")
 	    return null;
 	}
 	if (props.location.state.user !== state.user) {
-	    console.log(props.location.state.user)
+	    //console.log(props.location.state.user)
 	    return {
 
 		user: props.location.state.user,
@@ -165,10 +165,10 @@ class Level extends Component {
 	for (let i = 0; i < arr.length; i++) {
 	    if (arr[i] !== "") {
 		arr2.push( arr[i].split(';'));
-		console.log(arr2[i]);
+		//console.log(arr2[i]);
 	    }
 	}
-	console.log(arr2.length);
+	//console.log(arr2.length);
 	this.setState({testResults: arr2});
     }
 
@@ -238,7 +238,7 @@ class Level extends Component {
         //this.setState({output: body});
 	//console.log(body);
 	const separator = '\x07';
-	console.log(body.Output.split(separator));
+	//console.log(body.Output.split(separator));
 	this.setTestResults(body.Output);
 	//this.setTestResults("6;??????;?;fail,1;?;?;pass,0;;?;fail,-1;;?;fail");
 	//this.setState({testResults: body.split(",")});
@@ -338,7 +338,7 @@ class Level extends Component {
 
         });
         const body = await response.text();
-	console.log(body);
+	//console.log(body);
 
         this.setState({output: body,
 	    showCircleLoaderCustomInput: false});
@@ -377,17 +377,36 @@ class Level extends Component {
 	    return(
             <MuiThemeProvider theme={theme}>
                 <div className = "level-box">
-		    <div className = "level-header">
-			<div className = "level-number-box">
-			{"Level " + this.state.levelNumber}
-			</div>
-			<div className = "logout-box">
-		        <Button variant = "contained" onClick = {this.handleLogout} color = "secondary">
-		        log out	
-			</Button>
-			</div>
-		    </div>
 		    <div className = "parent-container">
+			<div className = "output-box">
+			    <div className = "instructions-box">
+
+			    <div className = "level-header">
+				<div className = "level-number-box">
+				    {"Level " + this.state.levelNumber}
+				</div>
+			    </div>
+			    {this.state.instructions}
+			    </div>
+			    <div className = "button-container">
+				<div className = "button-padding">
+				    <Button variant = "contained" color = "secondary" display = "flex" flexwrap = "nowrap" style={{width: '175px'}} onClick = {this.handleCustomSubmit}>
+					Run main method
+				    </Button>
+				</div>
+				<div className = "input-container">
+				    <Input id="custom-input" variant = "filled" disableUnderline = {true} fullWidth = {true} placeholder = "Enter command-line arguments" value={this.state.customInput} onChange={this.handleCustomInput} />
+				</div>
+			    </div>
+			    <div className = "button-area-container">
+				<Button variant = "contained" color = "secondary" style = {{ width: '19vw'}} onClick = {this.handleRunAllTests}>
+				Run all tests
+				</Button>
+				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50", width: '19vw'} : {backgroundColor: "#eeeeee", width: '19vw'}} onClick = {this.handleNextLevel}>
+				Next level
+				</Button>
+			    </div>
+			</div>
 			<div>
 			    <Dialog
 				open={this.state.customInputDialog}
@@ -492,34 +511,16 @@ class Level extends Component {
 			    if (editor.getCursor().line !== this.state.cursorActivity[this.state.cursorActivity.length -1]) {
 			    this.setState({
                             cursorActivity: [...this.state.cursorActivity, editor.getCursor().line]});
-			    console.log(this.state.cursorActivity);
+			    //console.log(this.state.cursorActivity);
 			    }
 			    }}
 			    />
-			</div>
-			<div className = "output-box">
-			    <div className = "instructions-box">
-			    {this.state.instructions}
-			    </div>
-			    <div className = "button-container">
-				<div className = "input-container">
-				    <Input id="custom-input" variant = "filled" disableUnderline = {true} fullWidth = {true} placeholder = "Enter custom inputs" value={this.state.customInput} onChange={this.handleCustomInput} />
-				</div>
-				<div className = "button-padding">
-				    <Button variant = "contained" color = "secondary" display = "flex" flexwrap = "nowrap" style={{width: '175px'}} onClick = {this.handleCustomSubmit}>
-				    Run custom input
-				    </Button>
-				</div>
-			    </div>
-			    <div className = "button-container">
-				<Button variant = "contained" color = "secondary" onClick = {this.handleRunAllTests}>
-				Run all tests
-				</Button>
-				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
-				Next level
-				</Button>
-				<Button variant = "contained" onClick = {this.handleReset} style ={{backgroundColor: "#d32f2f"}}>
+			    <div className = "reset-box">
+				<Button variant = "contained" onClick = {this.handleReset}  style ={{backgroundColor: "#d32f2f"}}>
 				Reset Code
+				</Button>
+				 <Button variant = "contained" onClick = {this.handleLogout} color = "secondary" style = {{width: '100px'}}>
+				log out	
 				</Button>
 			    </div>
 			</div>

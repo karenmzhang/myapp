@@ -3,7 +3,7 @@
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
   font-family: monospace;
-  height: 92vh;
+  height: 91vh;
   color: black;
   direction: ltr;
 }

@@ -85,8 +85,8 @@ class App extends Component {
 	    method: 'GET',
 	});
 	const body = await response.json();
-	if (response.status !== 200) console.log(body.message);
-	else console.log(body);
+	if (response.status !== 200) //console.log(body.message);
+	else //console.log(body);
     }
     
     handleNewUser = async e => {
@@ -98,7 +98,7 @@ class App extends Component {
 	    body: JSON.stringify({name: this.state.user}),
 	});
 	const body = await response.text();
-	if (response.status !== 200) console.log(body.message);
+	if (response.status !== 200) //console.log(body.message);
 
 	this.setState({user: ''});
     }
@@ -140,7 +140,7 @@ class App extends Component {
 	    }),
 	});
 	const body2 = await response2.text();
-	console.log(body2);
+	//console.log(body2);
 	this.setState({cursorActivity: []});
     };
     
@@ -171,7 +171,7 @@ class App extends Component {
 	    }),
 	});
 	const body2 = await response2.text();
-	console.log(body2);
+	//console.log(body2);
 	this.setState({cursorActivity: []});
     };
 

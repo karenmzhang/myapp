@@ -1,11 +1,11 @@
 export const levelData = {
     "description": 
     [
-	"Instructions: The method printQuestionMarks should return a string made up of n question marks, where n is an int given as an argument. If n is negative, return an empty string should be returned.\n\nExamples:\nInput = 6, Output = \"??????\" \nInput = 0, Output = \"\"",
-	"Instructions: The method isNegative takes an int as an argument and returns a boolean. It should return true if the given int is negative, and false otherwise. \n\nExamples:\nInput = -3, Output = true \nInput = 5, Output = false",
-	"Instructions: The method lengthGreaterThan3 takes a String as an argument and returns a boolean. It should return true if the given String has more than 3 characters, meaning that its length is greater than 3. It should return false otherwise. \n\nExamples:\nInput = \“hello world\”, Output = true \nInput = \"Hi\", Output = false",
-	"Instructions: The method maxTwoInts takes two ints as arguments and returns the value of the larger argument. You may assume that the two given ints will not be equal to each other. \n\nExamples:\nInput = 1, 4, Output = 4 \nInput = 2, -5, Output = 2",
-	"Instructions: The method arraySum takes an array of ints and should return the sum of all the elements in the array.\n\nExamples:\nInput = [1,2,3], Output = 6\nInput = [2], Output = 2"
+	"The method printQuestionMarks should return a string made up of n question marks, where n is an int given as an argument. If n is negative, return an empty string should be returned.\n\nExamples:\nInput = 6, Output = \"??????\" \nInput = 0, Output = \"\"",
+	"The method isNegative takes an int as an argument and returns a boolean. It should return true if the given int is negative, and false otherwise. \n\nExamples:\nInput = -3, Output = true \nInput = 5, Output = false",
+	"The method lengthGreaterThan3 takes a String as an argument and returns a boolean. It should return true if the given String has more than 3 characters, meaning that its length is greater than 3. It should return false otherwise. \n\nExamples:\nInput = \“hello world\”, Output = true \nInput = \"Hi\", Output = false",
+	"The method maxTwoInts takes two ints as arguments and returns the value of the larger argument. You may assume that the two given ints will not be equal to each other. \n\nExamples:\nInput = 1, 4, Output = 4 \nInput = 2, -5, Output = 2",
+	"The method arraySum takes an array of ints and should return the sum of all the elements in the array.\n\nExamples:\nInput = [1,2,3], Output = 6\nInput = [2], Output = 2"
     ], 
 
     "codeHead": 
