@@ -73,9 +73,16 @@ class Level extends Component {
 	if (props.location.state.user !== state.user) {
 	    console.log(props.location.state.user)
 	    return {
+		levelNumber: props.location.state.levelNumber,
 		user: props.location.state.user,
-		code: levelData.codeHead[0] + props.location.state.user +  levelData.starterCode[0],
-		initialCode:levelData.codeHead[0] + props.location.state.user +  levelData.starterCode[0],
+
+		
+		instructions: levelData.description[props.location.state.levelNumber],
+		code: levelData.codeHead[props.location.state.levelNumber] + props.location.state.user + levelData.starterCode[props.location.state.levelNumber],
+		initialCode:levelData.codeHead[props.location.state.levelNumber] + props.location.state.user + levelData.starterCode[props.location.state.levelNumber],
+		methodName: levelData.methodName[props.location.state.levelNumber],
+		className: levelData.className[props.location.state.levelNumber],
+		numberOfTests: levelData.numberOfTests[props.location.state.levelNumber],
 		
 	    };
 	}
@@ -83,8 +90,8 @@ class Level extends Component {
     }
 
     handleLogout() {
-	//window.location = "https://fed.princeton.edu/cas/logout?url=http://localhost:3000";
-	window.location = "https://fed.princeton.edu/cas/logout?url=https://debuggr.herokuapp.com";
+	window.location = "https://fed.princeton.edu/cas/logout?url=http://localhost:3000";
+	//window.location = "https://fed.princeton.edu/cas/logout?url=https://debuggr.herokuapp.com";
     }
 
     closeFailedToCompileDialog() {
@@ -140,8 +147,8 @@ class Level extends Component {
 	this.setState({allTestsDialog: true,
 	    showCircleLoaderRunTests: true,
 	});
-        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runtests', {
-	//const response = await fetch('http://localhost:8080/runtests', {
+        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runtests', {
+	const response = await fetch('http://localhost:8080/runtests', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -196,8 +203,8 @@ class Level extends Component {
     }
 
     handleNextLevel = event => {
-        const response = fetch('https://lit-mesa-21652.herokuapp.com/nextlevel', {
-	//const response = fetch('http://localhost:8080/nextlevel', {
+        //const response = fetch('https://lit-mesa-21652.herokuapp.com/nextlevel', {
+	const response = fetch('http://localhost:8080/nextlevel', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -225,6 +232,15 @@ class Level extends Component {
 			customInputDialog: false,
 			allTestsDialog: false,
            });
+	const response2 = fetch('/api/user/saveLevel', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+		netid: this.state.user,
+		levelNumber: currentLevelNumber +1, 
+	    }),
+        });
     }
 
     handleReset = event => {
@@ -240,8 +256,8 @@ class Level extends Component {
         e.preventDefault();
 	this.setState({customInputDialog: true,
 			showCircleLoaderCustomInput: true});
-        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
-	//const response = await fetch('http://localhost:8080/runjava', {
+        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+	const response = await fetch('http://localhost:8080/runjava', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -260,7 +276,7 @@ class Level extends Component {
         this.setState({output: body,
 	    showCircleLoaderCustomInput: false});
 
-        const response2 = await fetch('/api/snapshot', {
+        /*const response2 = await fetch('/api/snapshot', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -274,7 +290,7 @@ class Level extends Component {
             }),
         });
         const body2 = await response2.text();
-        console.log(body2);
+        console.log(body2);*/
         this.setState({cursorActivity: []});
     };
 

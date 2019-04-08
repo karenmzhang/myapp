@@ -5,8 +5,12 @@ module.exports = (sequelize, type) => {
 	    primaryKey: true,
 	    autoIncrement: true
 	},
-	name: {
+	netid: {
 	    type: type.STRING,
+	},
+	levelNumber: {
+	    type: type.INTEGER,
+	    defaultValue: 0,
 	},
     })
 }
