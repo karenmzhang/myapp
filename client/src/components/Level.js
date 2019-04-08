@@ -515,7 +515,7 @@ class Level extends Component {
 				<Button variant = "contained" color = "secondary" onClick = {this.handleRunAllTests}>
 				Run all tests
 				</Button>
-				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>=0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
+				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50"} : {backgroundColor: "#eeeeee" }} onClick = {this.handleNextLevel}>
 				Next level
 				</Button>
 				<Button variant = "contained" onClick = {this.handleReset} style ={{backgroundColor: "#d32f2f"}}>
