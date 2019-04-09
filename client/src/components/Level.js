@@ -38,7 +38,7 @@ class Level extends Component {
 	    numberOfTests: levelData.numberOfTests[0],
             output: '',
             user: '',
-            testResults: [";;;fail"],
+            testResults: [],
 	    numberTestsPassing: 0,
             cursorActivity: [],
             customInput: '',
@@ -289,7 +289,7 @@ class Level extends Component {
 			methodName: levelData.methodName[currentLevelNumber+1],
 			className: levelData.className[currentLevelNumber+1],
 			numberOfTests: levelData.numberOfTests[currentLevelNumber+1],
-			testResults: [";;;fail"],
+			testResults: [],
 			numberTestsPassing: 0,
 			cursorActivity: [],
 			customInput: '',
@@ -416,7 +416,7 @@ class Level extends Component {
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			    >
-				<DialogTitle id="alert-dialog-title">{"Custom Input Results:"}</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{"Main method outputs:"}</DialogTitle>
 				<DialogContent>
 				    {this.state.showCircleLoaderCustomInput ? 
 					<div className = "circle-loader">
