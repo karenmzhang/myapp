@@ -6,6 +6,7 @@ import green from '@material-ui/core/colors/green';
 import orange from '@material-ui/core/colors/orange';
 import red from '@material-ui/core/colors/red';
 import { Redirect } from 'react-router-dom';
+import splash from '../images/debuggrsplash_subtitle.png';
 
 class Login extends Component {
     constructor(props) {
@@ -65,6 +66,7 @@ class Login extends Component {
 	return(
 	    <MuiThemeProvider theme={theme}>
 	    <div className = "login-box">
+	    <img src = {splash} style = {{width: '80vw'}}/>
 	    <Button variant = "contained" color = "secondary" onClick = {this.handleLogin}>
 	    Log in
 	    </Button>
