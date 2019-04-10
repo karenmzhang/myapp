@@ -25,12 +25,12 @@ Snapshot.belongsTo(User);
 User.hasMany(Snapshot);
 
 // Removes tables on every startup and create new ones.
-//if (!process.env.DATABASE_URL) {
+if (!process.env.DATABASE_URL) {
     sequelize.sync({force: true})
 	.then(() => {
 	    console.log(`Database and tables created`);
 	})
-//}
+}
 
 module.exports = {
     User,
