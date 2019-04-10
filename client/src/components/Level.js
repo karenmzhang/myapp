@@ -22,7 +22,38 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {levelData} from './levelData.js';
+import instr0 from '../images/instr0.png';
+import instr1 from '../images/instr1.png';
+import instr2 from '../images/instr2.png';
+import instr3 from '../images/instr3.png';
+import instr4 from '../images/instr4.png';
+import instr5 from '../images/instr5.png';
+import instr6 from '../images/instr6.png';
+import instr7 from '../images/instr7.png';
+import instr8 from '../images/instr8.png';
+import instr9 from '../images/instr9.png';
+import instr10 from '../images/instr10.png';
+import instr11 from '../images/instr11.png';
+import instr12 from '../images/instr12.png';
+import instr13 from '../images/instr13.png';
 require('codemirror/mode/clike/clike');
+
+const instrs = [
+    instr0,
+    instr1,
+    instr2,
+    instr3,
+    instr4,
+    instr5,
+    instr6,
+    instr7,
+    instr8,
+    instr9,
+    instr10,
+    instr11,
+    instr12,
+    instr13,
+];
 
 class Level extends Component {
     constructor(props) {
@@ -48,8 +79,10 @@ class Level extends Component {
 	    showCircleLoaderCustomInput: false,
 	    showCircleLoaderRunTests: false,
 	    fetched: false,
+	    instructionNumber : 0,
         };
 	
+	this.advanceInstruction = this.advanceInstruction.bind(this);
         this.handleNewUser = this.handleNewUser.bind(this);
 	this.handleLogout = this.handleLogout.bind(this);
         this.handleCustomInput = this.handleCustomInput.bind(this);
@@ -124,6 +157,17 @@ class Level extends Component {
 	    ev.preventDefault();
 	    this.sendSnapshot(5, "", this.state.cursorActivity);
 	});
+    }
+
+    advanceInstruction() {
+	var instr = this.state.instructionNumber;
+	if (instr >= 13) {
+	    this.handleNextLevel();
+	    return;
+	}
+	else {
+	    this.setState({instructionNumber: instr+1});
+	}
     }
 
     sendSnapshot(id, body, cursorAct) {
@@ -372,6 +416,32 @@ class Level extends Component {
 		    </div>
 		</MuiThemeProvider>
 	    )
+	}
+	if (this.state.levelNumber == 0) {
+	    return (
+            <MuiThemeProvider theme={theme}>
+                <div className = "level-box">
+		    <Dialog
+			open={this.state.levelNumber == 0}
+			onClose={this.handleNextLevel}
+			disableBackdropClick = {true}
+			fullWidth = {true}
+			maxWidth = 'xl'
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+			>
+		    	<DialogContent>
+			    <img src = {instrs[this.state.instructionNumber]} style = {{width: '90%'}}/>
+			</DialogContent>
+			<DialogActions>
+			    <Button onClick={this.advanceInstruction} color="primary">
+			    Next
+			    </Button>
+			</DialogActions>
+		    </Dialog>
+                </div>
+            </MuiThemeProvider>
+	    );
 	}
 	else {
 	    return(
