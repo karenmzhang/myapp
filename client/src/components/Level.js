@@ -252,8 +252,8 @@ class Level extends Component {
 	this.setState({allTestsDialog: true,
 	    showCircleLoaderRunTests: true,
 	});
-        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runtests', {
-	//const response = await fetch('http://localhost:8080/runtests', {
+        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runtests', {
+	const response = await fetch('http://localhost:8080/runtests', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -311,8 +311,8 @@ class Level extends Component {
 
     handleNextLevel = event => {
 	this.sendSnapshot(2, "", this.state.cursorActivity);
-        const response = fetch('https://lit-mesa-21652.herokuapp.com/nextlevel', {
-	//const response = fetch('http://localhost:8080/nextlevel', {
+        //const response = fetch('https://lit-mesa-21652.herokuapp.com/nextlevel', {
+	const response = fetch('http://localhost:8080/nextlevel', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -367,8 +367,8 @@ class Level extends Component {
 	this.setState({customInputDialog: true,
 			showCircleLoaderCustomInput: true});
 	let cursorActivity = this.state.cursorActivity;
-        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
-	//const response = await fetch('http://localhost:8080/runjava', {
+        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+	const response = await fetch('http://localhost:8080/runjava', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -465,14 +465,14 @@ class Level extends Component {
 				    </Button>
 				</div>
 				<div className = "input-container">
-				    <Input id="custom-input" variant = "filled" disableUnderline = {true} fullWidth = {true} placeholder = "Enter command-line arguments" value={this.state.customInput} onChange={this.handleCustomInput} />
+				    <Input id="custom-input" variant = "filled" disableUnderline = {true} fullWidth = {true}  placeholder = "Enter command-line arguments" value={this.state.customInput} onChange={this.handleCustomInput} />
 				</div>
 			    </div>
 			    <div className = "button-area-container">
 				<Button variant = "contained" color = "secondary" style = {{ width: '19vw'}} onClick = {this.handleRunAllTests}>
 				Run all tests
 				</Button>
-				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50", width: '19vw'} : {backgroundColor: "#eeeeee", width: '19vw'}} onClick = {this.handleNextLevel}>
+				<Button variant = "contained" color = "primary" disabled = {this.state.numberTestsPassing>=0? false : true} style = {this.state.numberTestsPassing > 0 ? {backgroundColor: "#4caf50", width: '19vw'} : {backgroundColor: "#eeeeee", width: '19vw'}} onClick = {this.handleNextLevel}>
 				Next level
 				</Button>
 			    </div>
@@ -509,6 +509,7 @@ class Level extends Component {
 				onClose={this.closeAllTestsDialog}
 				disableBackdropClick = {true}
 				fullWidth = {true}
+				maxWidth = 'md'
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			    >
