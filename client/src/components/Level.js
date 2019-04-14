@@ -36,6 +36,7 @@ import instr10 from '../images/instr10.png';
 import instr11 from '../images/instr11.png';
 import instr12 from '../images/instr12.png';
 import instr13 from '../images/instr13.png';
+import instr14 from '../images/instr14.png';
 require('codemirror/mode/clike/clike');
 
 const instrs = [
@@ -53,6 +54,7 @@ const instrs = [
     instr11,
     instr12,
     instr13,
+    instr14
 ];
 
 class Level extends Component {
@@ -161,7 +163,7 @@ class Level extends Component {
 
     advanceInstruction() {
 	var instr = this.state.instructionNumber;
-	if (instr >= 13) {
+	if (instr >= 14) {
 	    this.handleNextLevel();
 	    return;
 	}
