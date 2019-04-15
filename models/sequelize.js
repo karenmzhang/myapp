@@ -9,6 +9,7 @@ var sequelize = new Sequelize('testdb', 'karenzhang', '', {
     dialect: 'postgres',
 });
 if (process.env.DATABASE_URL) {
+    console.log(DATABASE_URL)
     sequelize = new Sequelize(process.env.DATABASE_URL, {
 	dialect:  'postgres',
 	protocol: 'postgres',
@@ -25,12 +26,12 @@ Snapshot.belongsTo(User);
 User.hasMany(Snapshot);
 
 // Removes tables on every startup and create new ones.
-if (!process.env.DATABASE_URL) {
+//if (!process.env.DATABASE_URL) {
     sequelize.sync({force: true})
 	.then(() => {
 	    console.log(`Database and tables created`);
 	})
-}
+//}
 
 module.exports = {
     User,
