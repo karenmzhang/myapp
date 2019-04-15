@@ -41,8 +41,8 @@ class Login extends Component {
 
     handleLogin = async e => {
         e.preventDefault();
-        window.location = "https://fed.princeton.edu/cas/login?service=http://localhost:3000";
-	//window.location = "https://fed.princeton.edu/cas/login?service=https://debuggr.herokuapp.com";
+        //window.location = "https://fed.princeton.edu/cas/login?service=http://localhost:3000";
+	window.location = "https://fed.princeton.edu/cas/login?service=https://debuggr.herokuapp.com";
     }
 
     render() {
