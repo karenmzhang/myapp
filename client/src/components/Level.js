@@ -37,6 +37,7 @@ import instr11 from '../images/instr11.png';
 import instr12 from '../images/instr12.png';
 import instr13 from '../images/instr13.png';
 import instr14 from '../images/instr14.png';
+import gameOver from '../images/gameover.png';
 require('codemirror/mode/clike/clike');
 
 const instrs = [
@@ -254,8 +255,8 @@ class Level extends Component {
 	this.setState({allTestsDialog: true,
 	    showCircleLoaderRunTests: true,
 	});
-        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runtests', {
-	const response = await fetch('http://localhost:8080/runtests', {
+        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runtests', {
+	//const response = await fetch('http://localhost:8080/runtests', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -313,8 +314,8 @@ class Level extends Component {
 
     handleNextLevel = event => {
 	this.sendSnapshot(2, "", this.state.cursorActivity);
-        //const response = fetch('https://lit-mesa-21652.herokuapp.com/nextlevel', {
-	const response = fetch('http://localhost:8080/nextlevel', {
+        const response = fetch('https://lit-mesa-21652.herokuapp.com/nextlevel', {
+	//const response = fetch('http://localhost:8080/nextlevel', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -369,8 +370,8 @@ class Level extends Component {
 	this.setState({customInputDialog: true,
 			showCircleLoaderCustomInput: true});
 	let cursorActivity = this.state.cursorActivity;
-        //const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
-	const response = await fetch('http://localhost:8080/runjava', {
+        const response = await fetch('https://lit-mesa-21652.herokuapp.com/runjava', {
+	//const response = await fetch('http://localhost:8080/runjava', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             },
@@ -438,6 +439,32 @@ class Level extends Component {
 			<DialogActions>
 			    <Button onClick={this.advanceInstruction} color="primary">
 			    Next
+			    </Button>
+			</DialogActions>
+		    </Dialog>
+                </div>
+            </MuiThemeProvider>
+	    );
+	}
+	else if (this.state.levelNumber == 51) {
+	    return (
+            <MuiThemeProvider theme={theme}>
+                <div className = "level-box">
+		    <Dialog
+			open={this.state.levelNumber == 51}
+			onClose={this.handleLogout}
+			disableBackdropClick = {true}
+			fullWidth = {true}
+			maxWidth = 'xl'
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+			>
+		    	<DialogContent>
+			    <img src = {gameOver} style = {{width: '90%'}}/>
+			</DialogContent>
+			<DialogActions>
+			    <Button onClick={this.handleLogout} color="primary">
+			    Logout
 			    </Button>
 			</DialogActions>
 		    </Dialog>

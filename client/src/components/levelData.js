@@ -38,6 +38,21 @@ export const levelData = {
 	"The method either24 takes an array of ints and returns true if the array contains two consecutive 2s OR two consecutive 4s. However, if the array contains both two consecutive 2s AND two consecutive 4s, return false. You should also return false if the array does not contain two consecutive 2s and also does not contain two consecutive 4s.\n\nExamples:\nInput = [1,2,2], Output = true\nInput = [4,4,1], Output = true\nInput = [4,4,1,2,2], Output = false",
 	"The method sameStarChar takes a string and returns true if for every \'*\' character in the string, the characters immediately before and after the \'*\' are the same. You may assume that whenever a \'*\' char appears, it will have characters both before and after it.\n\nExamples:\nInput = \"xy*yzz\", Output = true\nInput = \"12*2*3\", Output = false",
 	"The method doubleChar takes a string and returns a new string where every character from the original string is duplicated. In other words, for every char in the original string, there should be two copies of that char next to each other in the new string.\n\nExamples:\nInput = \"The\", Output = \"TThhee\"\nInput = \"AAbb\", Output = \"AAAAbbbb\"",
+	"The method swapN takes two arrays of ints and a positive int n, and swaps the first n items of the first array with the first n items of the second array. You should do this swap in place, so your method does not need to return anything. You may assume that both arrays will be of at least length n.\n\nExamples:\nInput = ([1,2,3], [4,5,6], 2), Resulting arrays = ([4,5,3], [1,2,6])\nInput = ([3,8,2], [5,11], 1), Resulting arrays = ([5,8,2], [3,11])",
+	"The method countZeros2d takes a two dimensional array of ints and returns a count of the number of 0s that appear in the array. You may assume that the array will have at least one row and one column.\n\nExamples:\nInput = [[0,1,2], [3,9,0], [0,0,4]], Output = 4\nInput = [[0], [10]], Output = 1",
+	"The method bobThere takes a string and returns true if the string contains the string \"bob\", with the exception that the middle \'o\' char can actually be any char. In other words, return true if, in the given string, the char \'b\' is followed by any random character and then followed by another \'b\' char; otherwise, return false.\n\nExamples:\nInput = \"abcbob\", Output = true\nInput = \"bac\", Output = false",
+	"The method validTriangle takes three ints as arguments and returns true if the three ints could be the side lengths of a triangle. Recall that for any valid triangle, the sum of any two sides' lengths must be greater than the length of the third side. In other words, the method should return false if the sum of any pair of given ints is less than or equal to the third int.\n\nExamples:\nInput = 1, 2, 3, Output = false\nInput = 3, 4, 5, Output = true",
+	"The method seeColor takes a string checks if the string begins with \"red\" or \"blue\", returning whichever color it finds at the beginning of the string. Otherwise, if the string does not begin with \"red\" or \"blue\", return the empty string. You may assume that the string will be of length at least 3.\n\nExamples:\nInput = \"redxx\", Output = \"red\"\nInput = \"blueTimes\", Output = \"blue\"\nInput = \"NoColor\", Output = \"\"",
+	"The method reverseArray takes an array of ints reverses the order of the elements in the array. You should modify the given array, so the method does not return anything.\n\nExamples:\nInput = [1,2,3], Resulting array = [3,2,1]\nInput = [5, 10], Resulting array = [10, 5]",
+	"The method largestRow takes a two dimensional array and returns the sum of the elements in the row whose elements add up to the largest number. In other words, you should identify the row in the array whose elements have the largest sum, and then return this sum. You may assume that all items in the array will be positive and that there will be at least one row and one column.\n\nExamples:\nInput = [[1,2,5], [1,2,3]], Output = 8\nInput = [[5,7,3], [9,12,8], [25,3,11]], Output = 39",
+	"The method stringToNumber takes a string made up of digits between 0 and 9 and returns an array of ints such that each element in the array corresponds to a digit in the string. In other words, the ith entry of the array should be the value of the ith digit in the given string.\n\nExamples:\nInput = \"123\", Output = [1,2,3]\nInput = \"0901\", Output = [0,9,0,1]",
+	"The method sequenceStartEnd takes two ints, called start and end, and returns a new array containing the sequence of integers beginning from start and up to, but not including, end. You may assume that end will be greater than or equal to start.\n\nExamples:\nInput = (5, 10), Output = [5,6,7,8,9]\nInput = (1,3), Output = [1,2]",
+	"The method diagonalSum takes a two dimensional array of ints and returns the sum of all the elements on the array's diagonal. In other words, you should return the sum of every element whose row index and column index are equal. You may assume that the given array will have at least one row and one column.\n\nExamples:\nInput = [[1, 2, 3], [4, 5, 6], [7, 8, 9]], Output = 15\nInput = [[0, 1], [1, 0]], Output = 0",
+	"The method has77 takes an array of ints and returns true if the array contains two 7s next to each other, or if there are two 7s separated by only one element.\n\nExamples:\nInput = [1,7,7], Output = true\nInput = [1,7,1,7], Output = true\nInput = [1,2], Output = false",
+	"The method isPalindrome takes a positive integer and returns true if the number is a palindrome, and false otherwise. An integer is a palindrome when it reads the same backwards as forward.\n\nExamples:\nInput = 12321, Output = true\nInput = 44, Output = true\nInput = 365, Output = false",
+	"The method descOrAsc takes an array of ints and returns true if the array\'s elements are in strictly descending order OR strictly ascending order. Strictly descending order means that each item in the array is less than the previous item, and strictly ascending order means that each item is greater than the previous item.\n\nExamples:\nInput = [1,2,3], Output = true\nInput = [4,4,9,9], Output = false\nInput = [7,2,6,0], Output = false",
+	"The method fizzBuzz takes a positive int n and returns an array of length n containing the string representation of each number in the series of natural numbers starting from 1 and going consecutively up to, and including, n. However, for multiples of 3, use \"Fizz\" instead of the number, for multiples of 5 use \"Buzz\", and for multiples of both 3 and 5 use \"FizzBuzz\".\n\nExamples:\nInput = 3, Output = [\"1\", \"2\", \"Fizz\"]\nInput = 6, Output = [\"1\", \"2\", \"Fizz\", \"4\", \"Buzz\", \"6\"]\n\nFun fact: this famous problem is often given as a first problem for computer science job interviews.",
+	""
     ], 
 
     "codeHead": 
@@ -93,16 +108,7 @@ export const levelData = {
 	"public class Level48_",
 	"public class Level49_",
 	"public class Level50_",
-	"public class Level51_",
-	"public class Level52_",
-	"public class Level53_",
-	"public class Level54_",
-	"public class Level55_",
-	"public class Level56_",
-	"public class Level57_",
-	"public class Level58_",
-	"public class Level59_",
-	"public class Level60_"
+	"public class Level51_"
     ],
 
     "className": [
@@ -157,16 +163,7 @@ export const levelData = {
 	"Level48",
 	"Level49",
 	"Level50",
-	"Level51",
-	"Level52",
-	"Level53",
-	"Level54",
-	"Level55",
-	"Level56",
-	"Level57",
-	"Level58",
-	"Level59",
-	"Level60"
+	"Level51"
     ],
 
     "starterCode":
@@ -196,7 +193,7 @@ export const levelData = {
 	" {\n\n  // Debug the code in this method\n  public static int[] concatArrays(int[] a1, int[] a2) {\n    int[] result = new int[a1.length + a2.length];\n    for (int i = 0; i < a1.length; i++) {\n      int[] result[i] = a1[i];\n    }\n    for (int j = 0; j < a2.length; j++) {\n      int[] result[a1.length + j] = a2[j];\n    }\n    return result;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
 	" {\n\n  // Debug the code in this method\n  public static boolean firstLast6(int[] a) {\n    int n = a.length;\n    if a(0) == 6 || a(n - 1) == 6 {\n      return true;\n    }\n    return false;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
 	" {\n\n  // Debug the code in this method\n  public static boolean sameEnds(int[] a, int n) {\n    for (i = 0; i < n; i++) {\n      if (a[i] != a[a.length - n + i]) {\n        return false;  \n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
-	" {\n\n  // Debug the code in this method\n  public static int averageEvens(int[] a) {\n    sum = 0;\n    numberOfEvens = 0;\n    for (int i = 0; i < a.length; i++) {\n      sum = sum + a[i];\n      numberOfEvens++;\n    }\n    if (numberOfEvens = 0) {\n      return -1;\n    }\n    return sum/numberOfEvens;  \n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+	" {\n\n  // Debug the code in this method\n  public static int averageEvens(int[] a) {\n    sum = 0;\n    numberOfEvens = 0;\n    for (int i = 0; i < a.length; i++) {\n      if (a[i] % 2 == 0) {\n        sum = sum + a[i];\n        numberOfEvens++;\n      }\n    }\n    if (numberOfEvens = 0) {\n      return -1;\n    }\n    return sum/numberOfEvens;  \n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
 	" {\n\n  // Debug the code in this method\n  public static int matchUp(int[] a1, int[] a2) {\n    count = 0;\n    for (int i = 0, i < a1.length, i++) {\n      if (a1[i] == a2[i]) {\n        count++;\n      }\n    }\n    return count; \n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
 	" {\n\n  // Debug the code in this method\n  public static int[] pre4(int[] a) {\n    int firstFour = 0;\n    while (firstFour < a.length \&\& a[firstFour] != 4) {\n      firstFour++;\n    } \n\n    int[] newArray;\n    for (int i = 0; i < firstFour; i++); {\n      newArray[i] = a[i];\n    }\n    return newArray;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
 	" {\n\n  // Debug the code in this method\n  public static String starOut(String s) {\n    newString = \"\";\n    for (int i = 0; i < s.length(); i++) {\n      if (s.charAt(i) == \'*\') {\n        newString = newString + \'star\';\n      }\n      else newString = newString + s.charAt(i);\n    }\n    return newString;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
@@ -207,16 +204,31 @@ export const levelData = {
 	" {\n\n  // Debug the code in this method\n  public static boolean isEverywhere(int[] a, int n) {\n    for (i = 0; i < a.length; i++) {\n      if (a[i] != n \&\& a[i+1] != n) {\n        return false\n      }\n    }\n    return true;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
 	" {\n\n  // Debug the code in this method\n  public static boolean either24(int[] a) {\n    for (int i = 0; i < a.length; i++) {\n      if (a[i] == 2 \&\& a[i+1] == 2) {\n        boolean has22 = true;\n      }\n      if (a[i] == 4 \&\& a[i+1] == 4) {\n        boolean has44 = true;\n      }\n    }\n\n    if (has44 \&\& has22) {\n      return false;\n    }\n    else if (has44 || has22) {\n      return true;\n    }\n    else {\n      return false;\n    }\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
 	" {\n\n  // Debug the code in this method\n  public static boolean sameStarChar(String s) {\n    for (int i = 0; i <= s.length(); i++) {\n      if (s.charAt(i) == \'*\') {\n        if (s.charAt(i-1) != s.charAt(i+1)) {\n          return false;\n      }\n    }\n    return true;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
-	" {\n\n  // Debug the code in this method\n  public static String doubleChar(String s) {\n    String result = \"\";\n    for (int i = 0; i < s.length(); i++) {\n      result + s.charAt[i] + s.charAt[i];\n    }\n    return result;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}"
+	" {\n\n  // Debug the code in this method\n  public static String doubleChar(String s) {\n    String result = \"\";\n    for (int i = 0; i < s.length(); i++) {\n      result + s.charAt[i] + s.charAt[i];\n    }\n    return result;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+	" {\n\n  // Debug the code in this method\n  public static void swapN(int[] a1, int[] a2, int n) {\n    for (int i = 0: i < n: i++) {\n      a1[i] = a2[i];\n      a2[i] = a1[i];\n    }  \n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+	" {\n\n  // Debug the code in this method\n  public static int countZeros2d(int[][] a) {\n    counter = 0;\n    for (int i = 0; i < a.length; i++) {\n      for (int j = 0; i < a[0].length; i++) {\n        if (a[i][j] == 0)\n          counter++;\n      }\n    }\n    return counter;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static boolean bobThere(String s) {\n    for (int i = 0; i < s.length(); i++) {\n      if (s.charAt(i) == \'b\' \&\& s.charAt(i+2) == \'b\') {\n        return true;\n      }\n    }\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static boolean validTriangle(int a, int b, int c) {\n    if (a + b > c || b + c > a || a + c > b) {\n      return true;\n    return false;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static String seeColor(String s) {\n    if (s.substring(0,3) == \"red\") {\n      return \"red\";\n    }\n    if (s.length() >= 4 \&\& s.substring(0,4) == \"blue\") {\n      return \"blue\";\n    }\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static void reverseArray(int[] a) {\n    for (int i = 0; i < a.length/2; i++) \n      a[i] = a[a.length - i - 1];\n      a[a.length - i - 1] = a[i];\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static int largestRow(int[][] a) {\n    int largestSum;\n    int sum = 0;\n    for (int i = 0; i < a.length; i++) {\n      for (int j = 0; j < a[0].length; j++) {\n        sum += a[i][j];\n      }\n      if (sum > largestSum) {\n        largestSum = sum;\n      }\n    }\n    return largestSum;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static int[] stringToNumber(String s) {\n    int[] result = new int[s.length()];\n    for (int i = 0; i < s.length(); i++) {\n      result[i] = s.charAt(i);\n    return result;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static int[] sequenceStartEnd(int start, int end) {\n    int[] newArray;\n    for (int i = start; i < end; i++) {\n      newArray[i] = i;\n    }\n    return newArray;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static int diagonalSum(int[][] a) {\n    int sum = 0;\n    for (i = 0; i < a.length; i++) {\n      sum += a[i][i];\n    }\n    return sum;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static boolean has77(int[] a) {\n    for (int i = 0; i < a.length; i++) {\n      if (a[i] == 7) {\n        if (a[i] == 7 || a[i+1] == 7) {\n          return true;\n      }\n    }\n    return false;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static boolean isPalindrome(int n) {\n    String s = \"\";\n    while (n >= 1) {\n      s = s + n%10;\n      n = n/10;\n    }\n  \n    for (int i = 0; i < s.length()/2; i++) {\n      if (s.charAt(i) != s.charAt(s.length() - i)) {\n        return false;\n      }\n    }\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static boolean descOrAsc(int[] a) {\n    boolean desc;\n    boolean asc;\n\n    for (int i = 0; i < a.length; i++) {\n      if (a[i] > a[i+1]) {\n        asc = false;\n      }\n      if (a[i] < a[i+1]) {\n        desc = false;\n      }\n    }\n\n    if (asc || desc) {\n      return true;\n    }\n    else {\n      return false;\n    }\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    " {\n\n  // Debug the code in this method\n  public static String[] fizzBuzz(int n) {\n    String[] result = new String[n];\n    for (int i = 0; i < n; i++) {\n      if (i % 3 == 0) {\n        result[i] = \"Fizz\";\n      }\n      else if (i % 5 == 0) {\n        result[i] = \"Buzz\";\n      }\n      else {\n        result[i] = i;\n      }\n    }\n    return result;\n  }\n\n  // You can use the main method to test your code\n  public static void main(String[] args) {\n\n  }\n}",
+    ""
     ],
 
     "methodName": 
     [
-	"printQuestionMarks", "isNegative", "lengthGreaterThan3", "maxTwoInts", "arraySum", "swapEnds", "lastDigit", "countXes", "withinRange", "firstHalf", "divisible5or3", "helloStrings", "shortenArray", "firstLast", "averageEnds", "moreEvensThanTriples", "divideArray", "getShortest", "shiftLeft", "no14", "countEvens", "countHi", "concatArrays", "firstLast6", "sameEnds", "averageEvens", "matchUp", "pre4", "starOut", "smallestEntry", "maxEnd", "sumArray2d", "countUp", "isEverywhere", "either24", "sameStarChar", "doubleChar"
+	"printQuestionMarks", "isNegative", "lengthGreaterThan3", "maxTwoInts", "arraySum", "swapEnds", "lastDigit", "countXes", "withinRange", "firstHalf", "divisible5or3", "helloStrings", "shortenArray", "firstLast", "averageEnds", "moreEvensThanTriples", "divideArray", "getShortest", "shiftLeft", "no14", "countEvens", "countHi", "concatArrays", "firstLast6", "sameEnds", "averageEvens", "matchUp", "pre4", "starOut", "smallestEntry", "maxEnd", "sumArray2d", "countUp", "isEverywhere", "either24", "sameStarChar", "doubleChar", "swapN", "countZeros2d", "bobThere", "validTriangle", "seeColor", "reverseArray", "largestRow", "stringToNumber", "sequenceStartEnd", "diagonalSum", "has77", "isPalindrome", "descOrAsc", "fizzBuzz"
     ],
 
     "numberOfTests": 
     [
-	"4","4","5","4","4","4","6","6","6","6","6","5","4","5","6","6","5","6","5","5","6","6","6","0","0","0","0","0","0","0","0","0","0"
+	"4","4","5","4","4","4","6","6","6","6","6","5","4","5","6","6","5","6","5","5","6","6","6","6","6","6","6","6","6","6","5","5","6","6","7","6","5","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
     ]
 };
