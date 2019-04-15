@@ -28,7 +28,7 @@ User.hasMany(Snapshot);
 // Removes tables on every startup and create new ones.
 // IF FORCE IS TRUE, WILL DELETE TABLES. IF FORCE IS FALSE, WILL NOT?
 //if (!process.env.DATABASE_URL) {
-    sequelize.sync({force: false})
+    sequelize.sync({force: true})
 	.then(() => {
 	    console.log(`Database and tables created`);
 	})
