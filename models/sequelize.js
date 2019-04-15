@@ -9,7 +9,7 @@ var sequelize = new Sequelize('testdb', 'karenzhang', '', {
     dialect: 'postgres',
 });
 if (process.env.DATABASE_URL) {
-    console.log(DATABASE_URL)
+    //console.log(process.env.DATABASE_URL)
     sequelize = new Sequelize(process.env.DATABASE_URL, {
 	dialect:  'postgres',
 	protocol: 'postgres',
